@@ -6,12 +6,13 @@
   "scripts": {
     "prepare": "husky install",
     "test": "jest --passWithNoTests",
+    "test:staged": "jest --passWithNoTests",
     "prettier": "npx prettier --config .prettierrc --write \"src/**/*.ts\""
   },
   "lint-staged": {
     "src/**/*.ts": [
       "npm run prettier",
-      "npm test"
+      "npm run test:staged"
     ]
   },
   "husky": {
