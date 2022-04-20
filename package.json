@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
-    "test": "echo \"Error: no test specified\" && exit 0",
-    "prettier:check": "prettier --config .prettierrc --check \"src/**/*.ts\""
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "npx prettier --config .prettierrc --write \"src/**/*.ts\""
   },
   "lint-staged": {
     "src/**/*.ts": [
-      "npm run prettier:check"
+      "npm run prettier"
     ]
   },
   "husky": {
