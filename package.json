@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "prettier": "npx prettier --config .prettierrc --write \"src/**/*.ts\""
   },
   "lint-staged": {
     "src/**/*.ts": [
-      "npm run prettier"
+      "npm run prettier",
+      "npm test"
     ]
   },
   "husky": {
