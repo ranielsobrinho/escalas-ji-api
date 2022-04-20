@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "prettier": "npx prettier --config .prettierrc --write \"src/**/*.ts\""
   },
   "lint-staged": {
