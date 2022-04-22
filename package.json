@@ -9,17 +9,6 @@
     "test:staged": "jest --passWithNoTests",
     "prettier": "npx prettier --config .prettierrc --write \"src/**/*.ts\""
   },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "npm run prettier",
-      "npm run test:staged"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "keywords": [
     "Typescript",
     "Nodejs",
