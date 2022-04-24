@@ -1,7 +1,7 @@
 {
-  "name": "setup-node-typescript",
+  "name": "clean-node-api",
   "version": "0.0.1",
-  "description": "Just a setup for typescript and node backend development",
+  "description": "An api made with clean architecture and TDD, design patterns and more.",
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
