@@ -1,5 +1,5 @@
-# setup-node-typescript
-This is a basic backend development setup
+# Escalas-JI
+This is an api of musicias scales to events.
 
 ## 🚀 Technologies
 - ✔️ NodeJs
