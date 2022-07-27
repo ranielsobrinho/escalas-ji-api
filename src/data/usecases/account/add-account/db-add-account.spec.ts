@@ -38,4 +38,13 @@ describe('DbAddAccount', () => {
     await sut.add(makeFakeAccountData())
     expect(encryptSpy).toHaveBeenCalledWith('any_password')
   })
+
+  test('Should throw if Encrypter throws', async () => {
+    const { sut, encrypterStub } = makeSut()
+    jest
+      .spyOn(encrypterStub, 'generate')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.add(makeFakeAccountData())
+    await expect(promise).rejects.toThrow()
+  })
 })
