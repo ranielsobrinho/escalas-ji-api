@@ -7,16 +7,16 @@ import {
 import { DbAddAccount } from './db-add-account'
 
 const makeFakeAccountData = (): AddAccountModel => ({
-  name: 'any_name',
-  email: 'any_email@mail.com',
-  password: 'any_password'
+  name: 'valid_name',
+  email: 'valid_email@mail.com',
+  password: 'valid_password'
 })
 
 const makeFakeAccount = (): AccountModel => ({
-  id: 'any_id',
-  name: 'any_name',
-  email: 'any_email@mail.com',
-  password: 'any_password'
+  id: 'valid_id',
+  name: 'valid_name',
+  email: 'valid_email@mail.com',
+  password: 'hashed_password'
 })
 
 const makeEncrypterStub = (): Encrypter => {
@@ -59,7 +59,7 @@ describe('DbAddAccount', () => {
     const { sut, encrypterStub } = makeSut()
     const encryptSpy = jest.spyOn(encrypterStub, 'generate')
     await sut.add(makeFakeAccountData())
-    expect(encryptSpy).toHaveBeenCalledWith('any_password')
+    expect(encryptSpy).toHaveBeenCalledWith('valid_password')
   })
 
   test('Should throw if Encrypter throws', async () => {
@@ -76,8 +76,8 @@ describe('DbAddAccount', () => {
     const addAccountSpy = jest.spyOn(addAccountRepositoryStub, 'add')
     await sut.add(makeFakeAccountData())
     expect(addAccountSpy).toHaveBeenCalledWith({
-      name: 'any_name',
-      email: 'any_email@mail.com',
+      name: 'valid_name',
+      email: 'valid_email@mail.com',
       password: 'hashed_password'
     })
   })
@@ -89,5 +89,11 @@ describe('DbAddAccount', () => {
       .mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.add(makeFakeAccountData())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return an account on success', async () => {
+    const { sut } = makeSut()
+    const account = await sut.add(makeFakeAccountData())
+    expect(account).toEqual(makeFakeAccount())
   })
 })
