@@ -5,12 +5,11 @@ import { HttpRequest, HttpResponse } from '../../../protocols/http'
 
 export class SignUpController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { name, email } = httpRequest.body
-    if (!name) {
-      return badRequest(new MissinParamError('name'))
-    }
-    if (!email) {
-      return badRequest(new MissinParamError('email'))
+    const requiredFields = ['name', 'email']
+    for (const field of requiredFields) {
+      if (!httpRequest.body[field]) {
+        return badRequest(new MissinParamError(field))
+      }
     }
     return {
       statusCode: 200,
