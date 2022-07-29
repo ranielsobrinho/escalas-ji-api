@@ -1,17 +1,20 @@
-export class SignUpController {
-  async handle(httpRequest: any): Promise<any> {
+import { MissinParamError } from '../../../errors/missing-param-error'
+import { badRequest } from '../../../helpers/http-helper'
+import { Controller } from '../../../protocols/controller'
+import { HttpRequest, HttpResponse } from '../../../protocols/http'
+
+export class SignUpController implements Controller {
+  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     const { name, email } = httpRequest.body
     if (!name) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param: name')
-      }
+      return badRequest(new MissinParamError('name'))
     }
     if (!email) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param: email')
-      }
+      return badRequest(new MissinParamError('email'))
+    }
+    return {
+      statusCode: 200,
+      body: 'Cool body'
     }
   }
 }
