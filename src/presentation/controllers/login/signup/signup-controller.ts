@@ -1,4 +1,4 @@
-import { InvalidParamError, MissinParamError } from '../../../errors'
+import { InvalidParamError, MissingParamError } from '../../../errors'
 import { badRequest, ok, serverError } from '../../../helpers/http-helper'
 import {
   Controller,
@@ -18,7 +18,10 @@ export class SignUpController implements Controller {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      this.validation.validate(httpRequest.body)
+      const error = this.validation.validate(httpRequest.body)
+      if (error) {
+        return badRequest(error)
+      }
       const requiredFields = [
         'name',
         'email',
@@ -27,7 +30,7 @@ export class SignUpController implements Controller {
       ]
       for (const field of requiredFields) {
         if (!httpRequest.body[field]) {
-          return badRequest(new MissinParamError(field))
+          return badRequest(new MissingParamError(field))
         }
       }
       const { name, email, password, passwordConfirmation } = httpRequest.body
