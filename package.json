@@ -43,6 +43,7 @@
     "jest": "^27.5.1",
     "lint-staged": "^12.3.8",
     "prettier": "^2.6.2",
+    "prisma": "^4.1.1",
     "sucrase": "^3.24.0",
     "supertest": "^6.2.4",
     "ts-jest": "^27.1.4",
@@ -53,6 +54,7 @@
     "node": "16.x"
   },
   "dependencies": {
+    "@prisma/client": "^4.1.1",
     "bcrypt": "^5.0.1",
     "express": "^4.18.1",
     "mongodb": "^4.8.1",
