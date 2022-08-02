@@ -1,9 +1,9 @@
-import { LoadAccountByEmailRepository } from '../../../protocols/load-account-by-email-repository'
+import { LoadAccountByEmailRepository } from '../../../protocols/db/load-account-by-email-repository'
 import { DbAuthentication } from './db-authentication'
 import { AccountModel } from '../add-account/db-add-account-protocols'
-import { HashComparer } from '../../../protocols/hash-comparer'
-import { TokenGenerator } from '../../../protocols/token-generator'
-import { UpdateAccessTokenRepository } from '../../../protocols/update-access-token-repository'
+import { HashComparer } from '../../../protocols/criptography/hash-comparer'
+import { TokenGenerator } from '../../../protocols/criptography/token-generator'
+import { UpdateAccessTokenRepository } from '../../../protocols/db/update-access-token-repository'
 
 const makeLoadAccountByEmail = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub
