@@ -2,26 +2,32 @@ import { Authentication } from '../../../../domain/usecases/account/authenticati
 import { HashComparer } from '../../../protocols/hash-comparer'
 import { LoadAccountByEmailRepository } from '../../../protocols/load-account-by-email-repository'
 import { TokenGenerator } from '../../../protocols/token-generator'
+import { UpdateAccessTokenRepository } from '../../../protocols/update-access-token-repository'
 
 export class DbAuthentication implements Authentication {
   constructor(
     private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
     private readonly hashComparer: HashComparer,
-    private readonly tokenGenerator: TokenGenerator
+    private readonly tokenGenerator: TokenGenerator,
+    private readonly updateAccessTokenRepository: UpdateAccessTokenRepository
   ) {}
 
   async auth({
     email,
     password
   }: Authentication.Params): Promise<Authentication.Result> {
-    const acccount = await this.loadAccountByEmailRepository.loadByEmail(email)
-    if (acccount) {
+    const account = await this.loadAccountByEmailRepository.loadByEmail(email)
+    if (account) {
       const isValid = await this.hashComparer.compare(
         password,
-        acccount.password
+        account.password
       )
       if (isValid) {
-        await this.tokenGenerator.generate(acccount.id)
+        const accessToken = await this.tokenGenerator.generate(account.id)
+        await this.updateAccessTokenRepository.updateAccessToken(
+          account.id,
+          accessToken
+        )
       }
     }
     return Promise.resolve(null)
