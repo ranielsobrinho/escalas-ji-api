@@ -53,5 +53,11 @@ describe('AccountPgRepository', () => {
       expect(account.email).toBe('valid_email@mail.com')
       expect(account.password).toBe('hashed_password')
     })
+
+    test('Should return null if loadByEmail fails', async () => {
+      const sut = makeSut()
+      const account = await sut.loadByEmail('invalid_email@mail.com')
+      expect(account).toBeFalsy()
+    })
   })
 })
