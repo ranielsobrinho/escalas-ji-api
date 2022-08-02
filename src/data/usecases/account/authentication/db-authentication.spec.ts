@@ -180,4 +180,13 @@ describe('DbAuthentication', () => {
     })
     expect(updateSpy).toHaveBeenCalledWith('any_id', 'any_token')
   })
+
+  test('Should return accessToken on success', async () => {
+    const { sut } = makeSut()
+    const accessToken = await sut.auth({
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
+    expect(accessToken).toEqual({ accessToken: 'any_token' })
+  })
 })
