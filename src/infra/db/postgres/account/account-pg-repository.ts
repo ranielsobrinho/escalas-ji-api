@@ -28,6 +28,6 @@ export class AccountPgRepository
         email
       }
     })
-    return map(account)
+    return account && map(account)
   }
 }
