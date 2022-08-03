@@ -1,17 +1,34 @@
 import { Authentication } from '../../../../domain/usecases/account/authentication'
 import { LoginController } from './login-controller'
 
+const makeAuthenticationStub = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async auth(
+      authenticationParams: Authentication.Params
+    ): Promise<Authentication.Result> {
+      return Promise.resolve({ accessToken: 'any_token' })
+    }
+  }
+  return new AuthenticationStub()
+}
+
+type SutTypes = {
+  sut: LoginController
+  authenticationStub: Authentication
+}
+
+const makeSut = (): SutTypes => {
+  const authenticationStub = makeAuthenticationStub()
+  const sut = new LoginController(authenticationStub)
+  return {
+    sut,
+    authenticationStub
+  }
+}
+
 describe('LoginController', () => {
   test('Should call Authentication with correct values', async () => {
-    class AuthenticationStub implements Authentication {
-      async auth(
-        authenticationParams: Authentication.Params
-      ): Promise<Authentication.Result> {
-        return Promise.resolve({ accessToken: 'any_token' })
-      }
-    }
-    const authenticationStub = new AuthenticationStub()
-    const sut = new LoginController(authenticationStub)
+    const { sut, authenticationStub } = makeSut()
     const authSpy = jest.spyOn(authenticationStub, 'auth')
     await sut.handle({
       body: {
