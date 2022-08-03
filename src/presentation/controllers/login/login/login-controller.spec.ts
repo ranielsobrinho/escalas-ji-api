@@ -1,5 +1,5 @@
 import { Authentication } from '../../../../domain/usecases/account/authentication'
-import { serverError, unauthorized } from '../../../helpers/http-helper'
+import { ok, serverError, unauthorized } from '../../../helpers/http-helper'
 import { HttpRequest } from '../signup/signup-controller-protocols'
 import { LoginController } from './login-controller'
 const makeAuthenticationStub = (): Authentication => {
@@ -61,5 +61,11 @@ describe('LoginController', () => {
       .mockReturnValueOnce(Promise.reject(new Error()))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError())
+  })
+
+  test('Should return 200 if valid credentials are provided', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok({ accessToken: 'any_token' }))
   })
 })
