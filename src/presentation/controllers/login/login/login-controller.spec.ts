@@ -1,5 +1,5 @@
 import { Authentication } from '../../../../domain/usecases/account/authentication'
-import { unauthorized } from '../../../helpers/http-helper'
+import { serverError, unauthorized } from '../../../helpers/http-helper'
 import { HttpRequest } from '../signup/signup-controller-protocols'
 import { LoginController } from './login-controller'
 const makeAuthenticationStub = (): Authentication => {
@@ -52,5 +52,14 @@ describe('LoginController', () => {
       .mockReturnValueOnce(Promise.resolve(null))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(unauthorized())
+  })
+
+  test('Should return 500 if Authentication throws', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest
+      .spyOn(authenticationStub, 'auth')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError())
   })
 })
