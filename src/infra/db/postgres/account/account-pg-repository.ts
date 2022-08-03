@@ -2,9 +2,9 @@ import { AddAccountRepository } from '../../../../data/protocols/db/add-account-
 import { AccountModel } from '../../../../domain/models/account'
 import { AddAccountModel } from '../../../../domain/usecases/account/add-account'
 import { map } from './account-mapper'
+import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/load-account-by-email-repository'
 
 import { PrismaClient } from '@prisma/client'
-import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/load-account-by-email-repository'
 
 export class AccountPgRepository
   implements AddAccountRepository, LoadAccountByEmailRepository
