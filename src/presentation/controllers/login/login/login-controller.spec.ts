@@ -6,7 +6,7 @@ import {
   serverError,
   unauthorized
 } from '../../../helpers/http-helper'
-import { HttpRequest, Validation } from '../signup/signup-controller-protocols'
+import { HttpRequest, Validation } from './login-controller-protocols'
 import { LoginController } from './login-controller'
 
 const makeAuthenticationStub = (): Authentication => {
