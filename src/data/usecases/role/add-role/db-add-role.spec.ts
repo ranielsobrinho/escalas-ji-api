@@ -1,3 +1,5 @@
+import { RoleModel } from '../../../../domain/models/role'
+import { AddRoleRepository } from '../../../protocols/db/add-role-repository'
 import { LoadAccountByIdRepository } from '../../../protocols/db/load-account-by-id-repository'
 import { DbAddRole } from './db-add-role'
 
@@ -10,17 +12,36 @@ const makeFakeLoadById = (): LoadAccountByIdRepository => {
   return new LoadAccountByIdRepositoryStub()
 }
 
+const makeFakeAddRole = (): AddRoleRepository => {
+  class AddRoleRepositoryStub implements AddRoleRepository {
+    async add(name: string, userId: string): Promise<RoleModel> {
+      return Promise.resolve({
+        id: 'any_id',
+        name: 'any_name',
+        userId: 'any_id'
+      })
+    }
+  }
+  return new AddRoleRepositoryStub()
+}
+
 type SutTypes = {
   sut: DbAddRole
   loadAccountByIdRepositoryStub: LoadAccountByIdRepository
+  addRoleRepositoryStub: AddRoleRepository
 }
 
 const makeSut = (): SutTypes => {
   const loadAccountByIdRepositoryStub = makeFakeLoadById()
-  const sut = new DbAddRole(loadAccountByIdRepositoryStub)
+  const addRoleRepositoryStub = makeFakeAddRole()
+  const sut = new DbAddRole(
+    loadAccountByIdRepositoryStub,
+    addRoleRepositoryStub
+  )
   return {
     sut,
-    loadAccountByIdRepositoryStub
+    loadAccountByIdRepositoryStub,
+    addRoleRepositoryStub
   }
 }
 
@@ -57,5 +78,15 @@ describe('DbAddRole', () => {
       userId: 'any_id'
     })
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call AddRoleRepository with correct values', async () => {
+    const { sut, addRoleRepositoryStub } = makeSut()
+    const loadByIdSpy = jest.spyOn(addRoleRepositoryStub, 'add')
+    await sut.add({
+      name: 'any_name',
+      userId: 'any_id'
+    })
+    expect(loadByIdSpy).toHaveBeenCalledWith('any_name', 'any_id')
   })
 })
