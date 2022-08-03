@@ -25,6 +25,6 @@ export class DbAuthentication implements Authentication {
         return { accessToken: accessToken }
       }
     }
-    return Promise.resolve(null)
+    return null
   }
 }
