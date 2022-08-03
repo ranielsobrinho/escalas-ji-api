@@ -47,13 +47,15 @@ describe('DbAddRole', () => {
     expect(isAccount).toBeNull()
   })
 
-  //   test('Should throw if LoadAccountByIdRepository throws', async () => {
-  //     const { sut, loadAccountByIdRepositoryStub } = makeSut()
-  //     jest.spyOn(loadAccountByIdRepositoryStub, 'loadById').mockReturnValueOnce(Promise.reject(new Error()))
-  //     const promise = sut.add({
-  //       name: 'any_name',
-  //       userId: 'any_id'
-  //     })
-  //     await expect(promise).rejects.toThrow()
-  //   })
+  test('Should throw if LoadAccountByIdRepository throws', async () => {
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
+    jest
+      .spyOn(loadAccountByIdRepositoryStub, 'loadById')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.add({
+      name: 'any_name',
+      userId: 'any_id'
+    })
+    await expect(promise).rejects.toThrow()
+  })
 })
