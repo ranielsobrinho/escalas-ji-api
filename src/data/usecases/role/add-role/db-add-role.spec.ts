@@ -89,4 +89,16 @@ describe('DbAddRole', () => {
     })
     expect(loadByIdSpy).toHaveBeenCalledWith('any_name', 'any_id')
   })
+
+  test('Should throw if AddRoleRepository throws', async () => {
+    const { sut, addRoleRepositoryStub } = makeSut()
+    jest
+      .spyOn(addRoleRepositoryStub, 'add')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.add({
+      name: 'any_name',
+      userId: 'any_id'
+    })
+    await expect(promise).rejects.toThrow()
+  })
 })
