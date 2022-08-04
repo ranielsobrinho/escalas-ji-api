@@ -17,11 +17,8 @@ describe('AccountPgRepository', () => {
   })
 
   beforeEach(async () => {
-    await prisma.users.deleteMany({})
-  })
-
-  afterAll(async () => {
-    await prisma.users.deleteMany({})
+    await prisma.users.deleteMany({ where: { email: 'valid_email@mail.com' } })
+    await prisma.users.deleteMany({ where: { email: 'any_email@mail.com' } })
   })
 
   const makeSut = (): AccountPgRepository => {

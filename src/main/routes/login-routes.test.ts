@@ -10,7 +10,7 @@ describe('Login Routes', () => {
   })
 
   beforeEach(async () => {
-    await prisma.users.deleteMany()
+    await prisma.users.deleteMany({ where: { email: 'any_email@mail.com' } })
   })
 
   afterAll(async () => {
@@ -22,8 +22,8 @@ describe('Login Routes', () => {
       await request(app)
         .post('/api/signup')
         .send({
-          name: 'Raniel Sobrinho',
-          email: 'raniel.sobrinho@gmail.com',
+          name: 'any_name',
+          email: 'any_email@mail.com',
           password: '123456789',
           passwordConfirmation: '123456789'
         })
@@ -36,15 +36,15 @@ describe('Login Routes', () => {
       const password = await hash('12345', 12)
       await prisma.users.create({
         data: {
-          name: 'Raniel Sobrinho',
-          email: 'raniel.sobrinho@gmail.com',
+          name: 'any_name',
+          email: 'any_email@mail.com',
           password
         }
       })
       await request(app)
         .post('/api/login')
         .send({
-          email: 'raniel.sobrinho@gmail.com',
+          email: 'any_email@mail.com',
           password: '12345'
         })
         .expect(200)
