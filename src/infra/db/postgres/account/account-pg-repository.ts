@@ -5,9 +5,13 @@ import { map } from './account-mapper'
 import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/load-account-by-email-repository'
 
 import { PrismaClient } from '@prisma/client'
+import { LoadAccountByIdRepository } from '../../../../data/protocols/db/load-account-by-id-repository'
 
 export class AccountPgRepository
-  implements AddAccountRepository, LoadAccountByEmailRepository
+  implements
+    AddAccountRepository,
+    LoadAccountByEmailRepository,
+    LoadAccountByIdRepository
 {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -29,5 +33,13 @@ export class AccountPgRepository
       }
     })
     return account && map(account)
+  }
+
+  async loadById(id: string): Promise<boolean> {
+    const intId = Number(id)
+    const result = await this.prisma.users.findUnique({ where: { id: intId } })
+    if (result) {
+      return true
+    }
   }
 }
