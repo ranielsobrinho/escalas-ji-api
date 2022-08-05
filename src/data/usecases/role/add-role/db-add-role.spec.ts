@@ -17,7 +17,7 @@ const makeFakeAddRole = (): AddRoleRepository => {
     async add(name: string, userId: string): Promise<RoleModel> {
       return Promise.resolve({
         id: 'any_id',
-        name: 'any_name',
+        name: 'any_role',
         userId: 'any_id'
       })
     }
@@ -50,7 +50,7 @@ describe('DbAddRole', () => {
     const { sut, loadAccountByIdRepositoryStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadAccountByIdRepositoryStub, 'loadById')
     await sut.add({
-      name: 'any_name',
+      name: 'any_role',
       userId: 'any_id'
     })
     expect(loadByIdSpy).toHaveBeenCalledWith('any_id')
@@ -62,7 +62,7 @@ describe('DbAddRole', () => {
       .spyOn(loadAccountByIdRepositoryStub, 'loadById')
       .mockReturnValueOnce(Promise.resolve(false))
     const isAccount = await sut.add({
-      name: 'any_name',
+      name: 'any_role',
       userId: 'any_id'
     })
     expect(isAccount).toBeNull()
@@ -74,7 +74,7 @@ describe('DbAddRole', () => {
       .spyOn(loadAccountByIdRepositoryStub, 'loadById')
       .mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.add({
-      name: 'any_name',
+      name: 'any_role',
       userId: 'any_id'
     })
     await expect(promise).rejects.toThrow()
@@ -84,10 +84,10 @@ describe('DbAddRole', () => {
     const { sut, addRoleRepositoryStub } = makeSut()
     const loadByIdSpy = jest.spyOn(addRoleRepositoryStub, 'add')
     await sut.add({
-      name: 'any_name',
+      name: 'any_role',
       userId: 'any_id'
     })
-    expect(loadByIdSpy).toHaveBeenCalledWith('any_name', 'any_id')
+    expect(loadByIdSpy).toHaveBeenCalledWith('any_role', 'any_id')
   })
 
   test('Should throw if AddRoleRepository throws', async () => {
@@ -96,9 +96,24 @@ describe('DbAddRole', () => {
       .spyOn(addRoleRepositoryStub, 'add')
       .mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.add({
-      name: 'any_name',
+      name: 'any_role',
       userId: 'any_id'
     })
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return a role on success', async () => {
+    const { sut } = makeSut()
+    const newRole = await sut.add({
+      name: 'any_role',
+      userId: 'any_id'
+    })
+    expect(newRole).toEqual({
+      role: {
+        id: 'any_id',
+        name: 'any_role',
+        userId: 'any_id'
+      }
+    })
   })
 })
