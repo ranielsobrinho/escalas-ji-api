@@ -61,4 +61,26 @@ describe('AccountPgRepository', () => {
       expect(account).toBeFalsy()
     })
   })
+
+  describe('loadById()', () => {
+    test('Should return true if loadById succeeds', async () => {
+      const sut = makeSut()
+      const res = await prisma.users.create({
+        data: {
+          name: 'valid_name',
+          email: 'valid_email@mail.com',
+          password: 'hashed_password'
+        }
+      })
+      // const account = await sut.loadByEmail('valid_email@mail.com')
+      const account = await sut.loadById(res.id.toString())
+      expect(account).toBeTruthy()
+    })
+
+    //     test('Should return false if loadById fails', async () => {
+    //       const sut = makeSut()
+    //       const account = await sut.loadByEmail('invalid_email@mail.com')
+    //       expect(account).toBeFalsy()
+    //     })
+  })
 })
