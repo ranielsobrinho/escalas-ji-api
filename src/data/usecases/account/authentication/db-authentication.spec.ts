@@ -1,4 +1,4 @@
-import { LoadAccountByEmailRepository } from '../../../protocols/db/load-account-by-email-repository'
+import { LoadAccountByEmailRepository } from '../../../protocols/db/account/load-account-by-email-repository'
 import { DbAuthentication } from './db-authentication'
 import { AccountModel } from '../add-account/db-add-account-protocols'
 import { HashComparer } from '../../../protocols/criptography/hash-comparer'
@@ -13,7 +13,8 @@ const makeLoadAccountByEmail = (): LoadAccountByEmailRepository => {
         id: 'any_id',
         name: 'any_name',
         email: 'any_email@mail.com',
-        password: 'hashed_password'
+        password: 'hashed_password',
+        isAdmin: false
       }
       return Promise.resolve(account)
     }

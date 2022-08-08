@@ -1,5 +1,5 @@
 # Escalas-JI
-This is an api of musicias scales to events.
+This is an api for musicians to scale events.
 
 ## 🚀 Technologies
 - ✔️ NodeJs

@@ -28,13 +28,15 @@ describe('AccountMongoRepository', () => {
       const account = await sut.add({
         name: 'valid_name',
         email: 'valid_email@mail.com',
-        password: 'valid_password'
+        password: 'valid_password',
+        isAdmin: false
       })
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
       expect(account.name).toEqual('valid_name')
       expect(account.email).toEqual('valid_email@mail.com')
       expect(account.password).toEqual('valid_password')
+      expect(account.isAdmin).toEqual(false)
     })
   })
 
@@ -44,7 +46,8 @@ describe('AccountMongoRepository', () => {
       await accountCollection.insertOne({
         name: 'valid_name',
         email: 'valid_email@mail.com',
-        password: 'valid_password'
+        password: 'valid_password',
+        isAdmin: false
       })
       const account = await sut.loadByEmail('valid_email@mail.com')
       expect(account).toBeTruthy()
@@ -52,6 +55,7 @@ describe('AccountMongoRepository', () => {
       expect(account.name).toEqual('valid_name')
       expect(account.email).toEqual('valid_email@mail.com')
       expect(account.password).toEqual('valid_password')
+      expect(account.isAdmin).toEqual(false)
     })
 
     test('Should return null if loadByEmail fails', async () => {

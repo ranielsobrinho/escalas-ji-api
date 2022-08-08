@@ -1,6 +1,6 @@
 import { RoleModel } from '../../../../domain/models/role'
-import { AddRoleRepository } from '../../../protocols/db/add-role-repository'
-import { LoadAccountByIdRepository } from '../../../protocols/db/load-account-by-id-repository'
+import { AddRoleRepository } from '../../../protocols/db/role/add-role-repository'
+import { LoadAccountByIdRepository } from '../../../protocols/db/account/load-account-by-id-repository'
 import { DbAddRole } from './db-add-role'
 
 const makeFakeLoadById = (): LoadAccountByIdRepository => {

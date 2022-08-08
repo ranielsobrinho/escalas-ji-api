@@ -1,11 +1,11 @@
-import { AddAccountRepository } from '../../../../data/protocols/db/add-account-repository'
+import { AddAccountRepository } from '../../../../data/protocols/db/account/add-account-repository'
 import { AccountModel } from '../../../../domain/models/account'
 import { AddAccountModel } from '../../../../domain/usecases/account/add-account'
 import { map } from './account-mapper'
-import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/load-account-by-email-repository'
+import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/account/load-account-by-email-repository'
 
 import { PrismaClient } from '@prisma/client'
-import { LoadAccountByIdRepository } from '../../../../data/protocols/db/load-account-by-id-repository'
+import { LoadAccountByIdRepository } from '../../../../data/protocols/db/account/load-account-by-id-repository'
 
 export class AccountPgRepository
   implements
@@ -20,7 +20,8 @@ export class AccountPgRepository
       data: {
         name: account.name,
         email: account.email,
-        password: account.password
+        password: account.password,
+        isadmin: account.isAdmin
       }
     })
     return map(create)

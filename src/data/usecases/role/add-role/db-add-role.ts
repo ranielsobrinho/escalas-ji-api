@@ -1,6 +1,6 @@
 import { AddRole } from '../../../../domain/usecases/roles/add-roles'
-import { AddRoleRepository } from '../../../protocols/db/add-role-repository'
-import { LoadAccountByIdRepository } from '../../../protocols/db/load-account-by-id-repository'
+import { AddRoleRepository } from '../../../protocols/db/role/add-role-repository'
+import { LoadAccountByIdRepository } from '../../../protocols/db/account/load-account-by-id-repository'
 
 export class DbAddRole implements AddRole {
   constructor(

@@ -7,6 +7,7 @@ export const map = (account: any): AccountModel => {
     name: accountAdapter.name,
     email: accountAdapter.email,
     password: accountAdapter.password,
+    isAdmin: accountAdapter.isAdmin,
     id: accountAdapter.id.toString()
   }
   return accountWithId

@@ -1,6 +1,6 @@
 import { Authentication } from '../../../../domain/usecases/account/authentication'
 import { HashComparer } from '../../../protocols/criptography/hash-comparer'
-import { LoadAccountByEmailRepository } from '../../../protocols/db/load-account-by-email-repository'
+import { LoadAccountByEmailRepository } from '../../../protocols/db/account/load-account-by-email-repository'
 import { TokenGenerator } from '../../../protocols/criptography/token-generator'
 
 export class DbAuthentication implements Authentication {

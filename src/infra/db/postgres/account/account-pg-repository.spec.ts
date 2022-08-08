@@ -6,7 +6,8 @@ import { PrismaClient } from '@prisma/client'
 const makeFakeAddAccountModel = (): AddAccountModel => ({
   name: 'any_name',
   email: 'any_email@mail.com',
-  password: 'any_password'
+  password: 'any_password',
+  isAdmin: false
 })
 
 describe('AccountPgRepository', () => {
@@ -44,7 +45,8 @@ describe('AccountPgRepository', () => {
         data: {
           name: 'valid_name',
           email: 'valid_email@mail.com',
-          password: 'hashed_password'
+          password: 'hashed_password',
+          isadmin: false
         }
       })
       const account = await sut.loadByEmail('valid_email@mail.com')
@@ -69,7 +71,8 @@ describe('AccountPgRepository', () => {
         data: {
           name: 'valid_name',
           email: 'valid_email@mail.com',
-          password: 'hashed_password'
+          password: 'hashed_password',
+          isadmin: false
         }
       })
       const account = await sut.loadById(res.id.toString())
