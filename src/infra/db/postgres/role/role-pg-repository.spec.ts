@@ -13,9 +13,13 @@ describe('RolePgRepository', () => {
     await prisma.role.deleteMany({ where: { name: 'any_role' } })
   })
 
+  const makeSut = (): RolePgRepository => {
+    return new RolePgRepository(prisma)
+  }
+
   describe('add()', () => {
     test('Should return a new role on success', async () => {
-      const sut = new RolePgRepository(prisma)
+      const sut = makeSut()
       const account = await prisma.users.create({
         data: {
           name: 'valid_name',
