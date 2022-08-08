@@ -1,6 +1,7 @@
 import { PrismaClient } from '.prisma/client'
 import { AddRoleRepository } from '../../../../data/protocols/db/role/add-role-repository'
 import { RoleModel } from '../../../../domain/models/role'
+import { map } from './role-mapper'
 
 export class RolePgRepository implements AddRoleRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -13,10 +14,6 @@ export class RolePgRepository implements AddRoleRepository {
         userid: integerId
       }
     })
-    return Object.assign({}, role, {
-      id: role.id.toString(),
-      name,
-      userId: userId.toString()
-    })
+    return map(role)
   }
 }
