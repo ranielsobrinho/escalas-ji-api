@@ -10,6 +10,6 @@ export namespace LoadAccountById {
   }
 
   export type Result = {
-    id: string
+    token: string
   }
 }
