@@ -1,3 +1,3 @@
 export interface LoadAccountByIdRepository {
-  loadById(id: string): Promise<boolean>
+  loadById(id: string): Promise<boolean | string>
 }
