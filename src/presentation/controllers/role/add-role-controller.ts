@@ -1,5 +1,5 @@
 import { AddRole } from '../../../domain/usecases/roles/add-roles'
-import { serverError, ok } from '../../helpers/http-helper'
+import { serverError, ok, badRequest } from '../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../protocols'
 import { Validation } from '../login/login/login-controller-protocols'
 
@@ -11,7 +11,10 @@ export class AddRoleController implements Controller {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      this.validation.validate(httpRequest.body)
+      const error = this.validation.validate(httpRequest.body)
+      if (error) {
+        return badRequest(error)
+      }
       const { name, userId } = httpRequest.body
       const role = await this.addRole.add({ name, userId })
       return ok(role)
