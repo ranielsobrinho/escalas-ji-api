@@ -1,8 +1,11 @@
-import { LoadAccountById } from '../../domain/usecases/account/load-account-by-id'
 import { AccessDenied } from '../errors'
 import { forbidden, ok, serverError } from '../helpers/http-helper'
-import { HttpRequest, HttpResponse } from '../protocols'
-import { Middleware } from '../protocols/middleware'
+import {
+  LoadAccountById,
+  HttpResponse,
+  HttpRequest,
+  Middleware
+} from './auth-middleware-protocols'
 
 export class AuthMiddleware implements Middleware {
   constructor(private readonly loadAccountById: LoadAccountById) {}

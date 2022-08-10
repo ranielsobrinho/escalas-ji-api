@@ -1,7 +1,7 @@
-import { LoadAccountById } from '../../domain/usecases/account/load-account-by-id'
 import { AccessDenied } from '../errors'
 import { forbidden, ok, serverError } from '../helpers/http-helper'
 import { AuthMiddleware } from './auth-middleware'
+import { LoadAccountById } from './auth-middleware-protocols'
 
 const makeLoadById = (): LoadAccountById => {
   class LoadAccountByIdStub implements LoadAccountById {
