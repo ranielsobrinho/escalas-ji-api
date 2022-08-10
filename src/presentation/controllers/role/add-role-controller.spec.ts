@@ -1,6 +1,7 @@
 import { RoleModel } from '../../../domain/models/role'
 import { AddRole } from '../../../domain/usecases/roles/add-roles'
 import { ServerError } from '../../errors'
+import { ok } from '../../helpers/http-helper'
 import { HttpRequest } from '../../protocols'
 import { AddRoleController } from './add-role-controller'
 
@@ -59,5 +60,19 @@ describe('AddRoleController', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError('Internal server error'))
+  })
+
+  test('Should return a new role on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(
+      ok({
+        role: {
+          id: 'any_id',
+          name: 'any_name',
+          userId: '1'
+        }
+      })
+    )
   })
 })
