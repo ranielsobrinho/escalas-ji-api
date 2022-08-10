@@ -1,6 +1,6 @@
 import { LoadAccountById } from '../../domain/usecases/account/load-account-by-id'
 import { AccessDenied } from '../errors'
-import { forbidden } from '../helpers/http-helper'
+import { forbidden, ok } from '../helpers/http-helper'
 import { AuthMiddleware } from './auth-middleware'
 
 const makeLoadById = (): LoadAccountById => {
@@ -57,5 +57,21 @@ describe('Auth Middleware', () => {
       }
     })
     expect(httpResponse).toEqual(forbidden(new AccessDenied()))
+  })
+
+  test('Should return 200 if LoadByToken returns a token', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({
+      headers: {
+        'x-access-token': 'any_token'
+      }
+    })
+    expect(httpResponse).toEqual(
+      ok({
+        token: {
+          token: 'any_token'
+        }
+      })
+    )
   })
 })
