@@ -44,4 +44,15 @@ describe('DbLoadAccountById', () => {
     })
     expect(response).toBeNull()
   })
+
+  test('Should throw if decrypter throws', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest
+      .spyOn(decrypterStub, 'decrypt')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.loadById({
+      accessToken: 'any_value'
+    })
+    await expect(promise).rejects.toThrow()
+  })
 })
