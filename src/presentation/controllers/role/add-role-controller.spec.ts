@@ -2,20 +2,38 @@ import { RoleModel } from '../../../domain/models/role'
 import { AddRole } from '../../../domain/usecases/roles/add-roles'
 import { AddRoleController } from './add-role-controller'
 
+const makeFakeRole = (): RoleModel => ({
+  id: 'any_id',
+  name: 'any_name',
+  userId: '1'
+})
+
+const makeAddRoleStub = (): AddRole => {
+  class AddRoleStub implements AddRole {
+    async add({ name, userId }: AddRole.Params): Promise<AddRole.Result> {
+      return Promise.resolve({ role: makeFakeRole() })
+    }
+  }
+  return new AddRoleStub()
+}
+
+type SutTypes = {
+  sut: AddRoleController
+  addRoleStub: AddRole
+}
+
+const makeSut = (): SutTypes => {
+  const addRoleStub = makeAddRoleStub()
+  const sut = new AddRoleController(addRoleStub)
+  return {
+    sut,
+    addRoleStub
+  }
+}
+
 describe('AddRoleController', () => {
   test('Should call AddRole with correct values', async () => {
-    const makeFakeRole = (): RoleModel => ({
-      id: 'any_id',
-      name: 'any_name',
-      userId: '1'
-    })
-    class AddRoleStub implements AddRole {
-      async add({ name, userId }: AddRole.Params): Promise<AddRole.Result> {
-        return Promise.resolve({ role: makeFakeRole() })
-      }
-    }
-    const addRoleStub = new AddRoleStub()
-    const sut = new AddRoleController(addRoleStub)
+    const { sut, addRoleStub } = makeSut()
     const addRoleSpy = jest.spyOn(addRoleStub, 'add')
     await sut.handle({
       body: {
