@@ -19,5 +19,11 @@ describe('JWTAdapter', () => {
       await sut.generate('any_id')
       expect(jwtSpy).toHaveBeenCalledWith({ id: 'any_id' }, 'secret')
     })
+
+    test('Should return a token on sign success', async () => {
+      const sut = makeSut()
+      const token = await sut.generate('any_id')
+      expect(token).toBe('any_token')
+    })
   })
 })
