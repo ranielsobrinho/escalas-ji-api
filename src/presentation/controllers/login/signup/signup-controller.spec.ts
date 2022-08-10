@@ -7,7 +7,7 @@ import {
 } from './signup-controller-protocols'
 import { MissingParamError, ServerError } from '../../../errors/'
 import { SignUpController } from './signup-controller'
-import { badRequest } from '../../../helpers/http-helper'
+import { badRequest, serverError } from '../../../helpers/http-helper'
 import { Authentication } from '../../../../domain/usecases/account/authentication'
 
 const makeAuthenticationStub = (): Authentication => {
@@ -106,8 +106,7 @@ describe('Signup Controller', () => {
       throw new Error()
     })
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new ServerError('Internal server error'))
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should return 200 on success', async () => {
@@ -142,5 +141,14 @@ describe('Signup Controller', () => {
       email: 'valid_email@mail.com',
       password: 'valid_password'
     })
+  })
+
+  test('Should return 500 if Authentication throws', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest
+      .spyOn(authenticationStub, 'auth')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
