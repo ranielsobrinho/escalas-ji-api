@@ -80,4 +80,15 @@ describe('DbLoadAccountById', () => {
     })
     expect(loadByIdSpy).toHaveBeenCalledWith('any_value')
   })
+
+  test('Should return null if LoadAccountByIdRepository returns null', async () => {
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
+    jest
+      .spyOn(loadAccountByIdRepositoryStub, 'loadById')
+      .mockReturnValueOnce(Promise.resolve(null))
+    const response = await sut.loadById({
+      accessToken: 'any_value'
+    })
+    expect(response).toBeNull()
+  })
 })
