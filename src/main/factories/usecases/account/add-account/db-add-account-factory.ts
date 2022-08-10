@@ -9,5 +9,5 @@ export const makeDbAddAccount = (): AddAccount => {
   const encrypter = new BcryptAdapter(salt)
   const prismaClient = new PrismaClient()
   const addAccountRepository = new AccountPgRepository(prismaClient)
-  return new DbAddAccount(encrypter, addAccountRepository)
+  return new DbAddAccount(encrypter, addAccountRepository, addAccountRepository)
 }
