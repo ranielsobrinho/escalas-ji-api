@@ -1,0 +1,31 @@
+import { RoleModel } from '../../../domain/models/role'
+import { AddRole } from '../../../domain/usecases/roles/add-roles'
+import { AddRoleController } from './add-role-controller'
+
+describe('AddRoleController', () => {
+  test('Should call AddRole with correct values', async () => {
+    const makeFakeRole = (): RoleModel => ({
+      id: 'any_id',
+      name: 'any_name',
+      userId: '1'
+    })
+    class AddRoleStub implements AddRole {
+      async add({ name, userId }: AddRole.Params): Promise<AddRole.Result> {
+        return Promise.resolve({ role: makeFakeRole() })
+      }
+    }
+    const addRoleStub = new AddRoleStub()
+    const sut = new AddRoleController(addRoleStub)
+    const addRoleSpy = jest.spyOn(addRoleStub, 'add')
+    await sut.handle({
+      body: {
+        name: 'any_name',
+        userId: '1'
+      }
+    })
+    expect(addRoleSpy).toHaveBeenCalledWith({
+      name: 'any_name',
+      userId: '1'
+    })
+  })
+})
