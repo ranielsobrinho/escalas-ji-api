@@ -91,4 +91,15 @@ describe('DbLoadAccountById', () => {
     })
     expect(response).toBeNull()
   })
+
+  test('Should throw if LoadAccountByIdRepository throws', async () => {
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
+    jest
+      .spyOn(loadAccountByIdRepositoryStub, 'loadById')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.loadById({
+      accessToken: 'any_value'
+    })
+    await expect(promise).rejects.toThrow()
+  })
 })
