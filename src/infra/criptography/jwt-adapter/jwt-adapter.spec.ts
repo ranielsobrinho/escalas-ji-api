@@ -44,13 +44,13 @@ describe('JWTAdapter', () => {
     test('Should call verify with correct values', async () => {
       const sut = makeSut()
       const jwtSpy = jest.spyOn(jwt, 'verify')
-      await sut.decrypt('any_token')
+      await sut.verify('any_token')
       expect(jwtSpy).toHaveBeenCalledWith('any_token', 'secret')
     })
 
     test('Should return a value on verify success', async () => {
       const sut = makeSut()
-      const token = await sut.decrypt('any_token')
+      const token = await sut.verify('any_token')
       expect(token).toBe('any_value')
     })
 
@@ -59,7 +59,7 @@ describe('JWTAdapter', () => {
       jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
         throw new Error()
       })
-      const promise = sut.decrypt('any_token')
+      const promise = sut.verify('any_token')
       await expect(promise).rejects.toThrow()
     })
   })

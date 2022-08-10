@@ -1,8 +1,8 @@
-import { Decrypter } from '../../../data/protocols/criptography/decrypter'
+import { TokenVerify } from '../../../data/protocols/criptography/token-verify'
 import jwt from 'jsonwebtoken'
 import { TokenGenerator } from '../../../data/protocols/criptography/token-generator'
 
-export class JWTAdapter implements TokenGenerator, Decrypter {
+export class JWTAdapter implements TokenGenerator, TokenVerify {
   constructor(private readonly salt: string) {}
 
   async generate(id: string): Promise<string> {
@@ -10,7 +10,7 @@ export class JWTAdapter implements TokenGenerator, Decrypter {
     return accessToken
   }
 
-  async decrypt(token: string): Promise<string> {
+  async verify(token: string): Promise<string> {
     const value = jwt.verify(token, this.salt)
     return value as string
   }

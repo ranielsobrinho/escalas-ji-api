@@ -1,9 +1,9 @@
-import { Decrypter } from '../../../protocols/criptography/decrypter'
+import { TokenVerify } from '../../../protocols/criptography/token-verify'
 import { DbLoadAccountById } from './db-load-account-by-id'
 
-const makeDecrypterStub = (): Decrypter => {
-  class DecrypterStub implements Decrypter {
-    async decrypt(value: string): Promise<string> {
+const makeDecrypterStub = (): TokenVerify => {
+  class DecrypterStub implements TokenVerify {
+    async verify(token: string): Promise<string> {
       return Promise.resolve('any_value')
     }
   }
@@ -12,7 +12,7 @@ const makeDecrypterStub = (): Decrypter => {
 
 type SutTypes = {
   sut: DbLoadAccountById
-  decrypterStub: Decrypter
+  decrypterStub: TokenVerify
 }
 
 const makeSut = (): SutTypes => {
@@ -27,7 +27,7 @@ const makeSut = (): SutTypes => {
 describe('DbLoadAccountById', () => {
   test('Should call decrypter with correct values', async () => {
     const { sut, decrypterStub } = makeSut()
-    const decryptSpy = jest.spyOn(decrypterStub, 'decrypt')
+    const decryptSpy = jest.spyOn(decrypterStub, 'verify')
     await sut.loadById({
       accessToken: 'any_value'
     })
@@ -37,7 +37,7 @@ describe('DbLoadAccountById', () => {
   test('Should return null if decrypter returns null', async () => {
     const { sut, decrypterStub } = makeSut()
     jest
-      .spyOn(decrypterStub, 'decrypt')
+      .spyOn(decrypterStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(null))
     const response = await sut.loadById({
       accessToken: 'any_value'
@@ -48,7 +48,7 @@ describe('DbLoadAccountById', () => {
   test('Should throw if decrypter throws', async () => {
     const { sut, decrypterStub } = makeSut()
     jest
-      .spyOn(decrypterStub, 'decrypt')
+      .spyOn(decrypterStub, 'verify')
       .mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.loadById({
       accessToken: 'any_value'
