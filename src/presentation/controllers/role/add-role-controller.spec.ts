@@ -1,11 +1,20 @@
 import { RoleModel } from '../../../domain/models/role'
 import { AddRole } from '../../../domain/usecases/roles/add-roles'
+import { ServerError } from '../../errors'
+import { HttpRequest } from '../../protocols'
 import { AddRoleController } from './add-role-controller'
 
 const makeFakeRole = (): RoleModel => ({
   id: 'any_id',
   name: 'any_name',
   userId: '1'
+})
+
+const makeFakeRequest = (): HttpRequest => ({
+  body: {
+    name: 'any_name',
+    userId: '1'
+  }
 })
 
 const makeAddRoleStub = (): AddRole => {
@@ -35,15 +44,20 @@ describe('AddRoleController', () => {
   test('Should call AddRole with correct values', async () => {
     const { sut, addRoleStub } = makeSut()
     const addRoleSpy = jest.spyOn(addRoleStub, 'add')
-    await sut.handle({
-      body: {
-        name: 'any_name',
-        userId: '1'
-      }
-    })
+    await sut.handle(makeFakeRequest())
     expect(addRoleSpy).toHaveBeenCalledWith({
       name: 'any_name',
       userId: '1'
     })
+  })
+
+  test('Should return 500 if AddRole throws', async () => {
+    const { sut, addRoleStub } = makeSut()
+    jest.spyOn(addRoleStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError('Internal server error'))
   })
 })
