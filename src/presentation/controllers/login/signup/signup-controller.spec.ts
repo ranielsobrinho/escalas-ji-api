@@ -7,7 +7,7 @@ import {
 } from './signup-controller-protocols'
 import { MissingParamError, ServerError } from '../../../errors/'
 import { SignUpController } from './signup-controller'
-import { badRequest, serverError } from '../../../helpers/http-helper'
+import { badRequest, serverError, ok } from '../../../helpers/http-helper'
 import { Authentication } from '../../../../domain/usecases/account/authentication'
 
 const makeAuthenticationStub = (): Authentication => {
@@ -112,8 +112,7 @@ describe('Signup Controller', () => {
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse.statusCode).toBe(200)
-    expect(httpResponse.body).toEqual(makeFakeAccount())
+    expect(httpResponse).toEqual(ok({ accessToken: 'any_token' }))
   })
 
   test('Should call Validation with correct values', async () => {
