@@ -3,6 +3,7 @@ import { AddRole } from '../../../domain/usecases/roles/add-roles'
 import { ServerError } from '../../errors'
 import { ok } from '../../helpers/http-helper'
 import { HttpRequest } from '../../protocols'
+import { Validation } from '../login/login/login-controller-protocols'
 import { AddRoleController } from './add-role-controller'
 
 const makeFakeRole = (): RoleModel => ({
@@ -27,17 +28,29 @@ const makeAddRoleStub = (): AddRole => {
   return new AddRoleStub()
 }
 
+const makeValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate(input: any): Error {
+      return null
+    }
+  }
+  return new ValidationStub()
+}
+
 type SutTypes = {
   sut: AddRoleController
   addRoleStub: AddRole
+  validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const addRoleStub = makeAddRoleStub()
-  const sut = new AddRoleController(addRoleStub)
+  const validationStub = makeValidation()
+  const sut = new AddRoleController(addRoleStub, validationStub)
   return {
     sut,
-    addRoleStub
+    addRoleStub,
+    validationStub
   }
 }
 
@@ -74,5 +87,13 @@ describe('AddRoleController', () => {
         }
       })
     )
+  })
+
+  test('Should call Validation with correct values', async () => {
+    const { sut, validationStub } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })
