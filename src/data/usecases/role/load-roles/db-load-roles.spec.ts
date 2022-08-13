@@ -17,15 +17,32 @@ const makeRoleModel = (): RoleModel[] => {
   ]
 }
 
+const makeLoadRolesRepository = (): LoadRolesRepository => {
+  class LoadRolesRepositoryStub implements LoadRolesRepository {
+    async load(): Promise<RoleModel[]> {
+      return Promise.resolve(makeRoleModel())
+    }
+  }
+  return new LoadRolesRepositoryStub()
+}
+
+type SutTypes = {
+  sut: DbLoadRoles
+  loadRolesRepositoryStub: LoadRolesRepository
+}
+
+const makeSut = (): SutTypes => {
+  const loadRolesRepositoryStub = makeLoadRolesRepository()
+  const sut = new DbLoadRoles(loadRolesRepositoryStub)
+  return {
+    sut,
+    loadRolesRepositoryStub
+  }
+}
+
 describe('DbLoadRoles', () => {
   test('Should call LoadRolesRepository', async () => {
-    class LoadRolesRepositoryStub implements LoadRolesRepository {
-      async load(): Promise<RoleModel[]> {
-        return Promise.resolve(makeRoleModel())
-      }
-    }
-    const loadRolesRepositoryStub = new LoadRolesRepositoryStub()
-    const sut = new DbLoadRoles(loadRolesRepositoryStub)
+    const { sut, loadRolesRepositoryStub } = makeSut()
     const loadAllSpy = jest.spyOn(loadRolesRepositoryStub, 'load')
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
