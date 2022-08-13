@@ -47,4 +47,13 @@ describe('DbLoadRoles', () => {
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
   })
+
+  test('Should return null if LoadRolesRepository returns null', async () => {
+    const { sut, loadRolesRepositoryStub } = makeSut()
+    jest
+      .spyOn(loadRolesRepositoryStub, 'load')
+      .mockReturnValueOnce(Promise.resolve(null))
+    const response = await sut.load()
+    expect(response).toBeNull()
+  })
 })
