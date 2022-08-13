@@ -5,7 +5,10 @@ import { LoadRolesRepository } from '../../../protocols/db/role/load-roles-repos
 export class DbLoadRoles implements LoadRoles {
   constructor(private readonly loadRolesRepository: LoadRolesRepository) {}
   async load(): Promise<RoleModel[]> {
-    await this.loadRolesRepository.load()
+    const roles = await this.loadRolesRepository.load()
+    if (roles) {
+      return roles
+    }
     return null
   }
 }
