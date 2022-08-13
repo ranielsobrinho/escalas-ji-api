@@ -6,6 +6,6 @@ export class DbLoadRoles implements LoadRoles {
   constructor(private readonly loadRolesRepository: LoadRolesRepository) {}
   async load(): Promise<RoleModel[]> {
     const roles = await this.loadRolesRepository.load()
-    return roles ? roles : null
+    return roles
   }
 }
