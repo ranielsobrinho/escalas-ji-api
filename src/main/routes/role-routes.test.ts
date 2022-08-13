@@ -17,7 +17,7 @@ describe('Login Routes', () => {
   })
 
   describe('POST /add-role', () => {
-    test('Should return 403 on add role without accessToken', async () => {
+    test('Should return 200 add role', async () => {
       const account = await prisma.users.create({
         data: {
           name: 'valid_name',
@@ -32,7 +32,7 @@ describe('Login Routes', () => {
           name: 'any_name',
           userId: account.id.toString()
         })
-        .expect(403)
+        .expect(200)
     })
   })
 })
