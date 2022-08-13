@@ -13,6 +13,5 @@ module.exports = {
   coverageProvider: 'babel',
   transform: {
     '.+\\.ts$': 'ts-jest'
-  },
-  preset: '@shelf/jest-mongodb'
+  }
 }
