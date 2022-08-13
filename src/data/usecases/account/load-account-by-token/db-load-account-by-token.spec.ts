@@ -24,7 +24,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('DbLoadAccountById', () => {
+describe('DbLoadAccountByToken', () => {
   test('Should call decrypter with correct values', async () => {
     const { sut, decrypterStub } = makeSut()
     const decryptSpy = jest.spyOn(decrypterStub, 'verify')
@@ -56,11 +56,11 @@ describe('DbLoadAccountById', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return an accessToken on success', async () => {
+  test('Should return void accessToken on success', async () => {
     const { sut } = makeSut()
     const response = await sut.load({
       accessToken: 'any_value'
     })
-    expect(response).toEqual({ token: 'any_value' })
+    expect(response).toBeNull()
   })
 })

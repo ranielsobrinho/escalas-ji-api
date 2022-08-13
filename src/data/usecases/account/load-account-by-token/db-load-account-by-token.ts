@@ -3,12 +3,10 @@ import { TokenVerify } from '../../../protocols/criptography/token-verify'
 
 export class DbLoadAccountByToken implements LoadAccountByToken {
   constructor(private readonly decrypter: TokenVerify) {}
-  async load({
-    accessToken
-  }: LoadAccountByToken.Params): Promise<LoadAccountByToken.Result> {
+  async load({ accessToken }: LoadAccountByToken.Params): Promise<void> {
     const token = await this.decrypter.verify(accessToken)
     if (token) {
-      return { token: token }
+      return null
     }
     return null
   }
