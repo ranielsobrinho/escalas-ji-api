@@ -56,4 +56,13 @@ describe('DbLoadRoles', () => {
     const response = await sut.load()
     expect(response).toBeNull()
   })
+
+  test('Should throw if LoadRolesRepository throws', async () => {
+    const { sut, loadRolesRepositoryStub } = makeSut()
+    jest
+      .spyOn(loadRolesRepositoryStub, 'load')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+    const response = sut.load()
+    await expect(response).rejects.toThrow()
+  })
 })
