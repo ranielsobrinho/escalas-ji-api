@@ -1,4 +1,4 @@
-import { AddRoleController } from '../../../../../presentation/controllers/role/add-role-controller'
+import { AddRoleController } from '../../../../../presentation/controllers/role/add-role/add-role-controller'
 import { makeDbAddRole } from '../../../usecases/role/add-role/db-add-role-factory'
 import { makeAddRoleValidation } from './add-role-validation'
 
