@@ -65,4 +65,11 @@ describe('DbLoadRoles', () => {
     const response = sut.load()
     await expect(response).rejects.toThrow()
   })
+
+  test('Should return an array of roles on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.load()
+    expect(response).toEqual(makeRoleModel())
+    expect(response).toBeInstanceOf(Array)
+  })
 })
