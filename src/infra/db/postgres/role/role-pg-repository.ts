@@ -1,9 +1,12 @@
 import { PrismaClient } from '.prisma/client'
 import { AddRoleRepository } from '../../../../data/protocols/db/role/add-role-repository'
+import { LoadRolesRepository } from '../../../../data/protocols/db/role/load-roles-repository'
 import { RoleModel } from '../../../../domain/models/role'
 import { map } from './role-mapper'
 
-export class RolePgRepository implements AddRoleRepository {
+export class RolePgRepository
+  implements AddRoleRepository, LoadRolesRepository
+{
   constructor(private readonly prisma: PrismaClient) {}
 
   async add(name: string, userId: string): Promise<RoleModel> {
@@ -15,5 +18,11 @@ export class RolePgRepository implements AddRoleRepository {
       }
     })
     return map(role)
+  }
+
+  async load(): Promise<RoleModel[]> {
+    const roles = await this.prisma.role.findMany()
+    const mappedRoles = roles.map((role) => map(role))
+    return mappedRoles
   }
 }
