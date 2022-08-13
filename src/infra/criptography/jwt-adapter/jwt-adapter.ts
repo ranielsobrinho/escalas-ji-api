@@ -11,7 +11,7 @@ export class JWTAdapter implements TokenGenerator, TokenVerify {
   }
 
   async verify(token: string): Promise<string> {
-    const value = jwt.verify(token, this.salt)
-    return value as string
+    const value: any = jwt.verify(token, this.salt)
+    return value
   }
 }

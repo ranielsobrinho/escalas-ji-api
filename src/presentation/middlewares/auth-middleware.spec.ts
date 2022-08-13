@@ -5,7 +5,7 @@ import { LoadAccountByToken } from './auth-middleware-protocols'
 
 const makeLoadByToken = (): LoadAccountByToken => {
   class LoadAccountByTokenStub implements LoadAccountByToken {
-    async load({ accessToken }: LoadAccountByToken.Params): Promise<void> {
+    async load(accessToken: string): Promise<void> {
       return Promise.resolve()
     }
   }

@@ -28,9 +28,7 @@ describe('DbLoadAccountByToken', () => {
   test('Should call decrypter with correct values', async () => {
     const { sut, decrypterStub } = makeSut()
     const decryptSpy = jest.spyOn(decrypterStub, 'verify')
-    await sut.load({
-      accessToken: 'any_value'
-    })
+    await sut.load('any_value')
     expect(decryptSpy).toHaveBeenCalledWith('any_value')
   })
 
@@ -39,9 +37,7 @@ describe('DbLoadAccountByToken', () => {
     jest
       .spyOn(decrypterStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(null))
-    const response = await sut.load({
-      accessToken: 'any_value'
-    })
+    const response = await sut.load('any_value')
     expect(response).toBeNull()
   })
 
@@ -50,17 +46,13 @@ describe('DbLoadAccountByToken', () => {
     jest
       .spyOn(decrypterStub, 'verify')
       .mockReturnValueOnce(Promise.reject(new Error()))
-    const promise = sut.load({
-      accessToken: 'any_value'
-    })
+    const promise = sut.load('any_value')
     await expect(promise).rejects.toThrow()
   })
 
   test('Should return void accessToken on success', async () => {
     const { sut } = makeSut()
-    const response = await sut.load({
-      accessToken: 'any_value'
-    })
+    const response = await sut.load('any_value')
     expect(response).toBeNull()
   })
 })
