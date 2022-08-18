@@ -1,4 +1,5 @@
 import { LoadRoles } from '../../../../domain/usecases/roles/load-roles'
+import { ServerError } from '../../../errors'
 import { RoleModel } from '../add-role/add-role-controller-protocols'
 import { LoadRolesController } from './load-roles-controller'
 
@@ -46,5 +47,15 @@ describe('LoadRolesController', () => {
     const loadRolesSpy = jest.spyOn(loadRolesStub, 'load')
     await sut.handle({})
     expect(loadRolesSpy).toHaveBeenCalled()
+  })
+
+  test('Should call LoadRoles', async () => {
+    const { sut, loadRolesStub } = makeSut()
+    jest.spyOn(loadRolesStub, 'load').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle({})
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError('Internal server error'))
   })
 })
