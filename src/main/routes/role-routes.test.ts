@@ -57,4 +57,10 @@ describe('Login Routes', () => {
         .expect(200)
     })
   })
+
+  describe('GET /load-roles', () => {
+    test('Should return 403 on load role without token', async () => {
+      await request(app).get('/api/load-roles').expect(403)
+    })
+  })
 })
