@@ -62,5 +62,21 @@ describe('Login Routes', () => {
     test('Should return 403 on load role without token', async () => {
       await request(app).get('/api/load-roles').expect(403)
     })
+
+    test('Should return 200 on load role with token', async () => {
+      const account = await prisma.users.create({
+        data: {
+          name: 'valid_name',
+          email: 'valid_email@mail.com',
+          password: 'hashed_password',
+          isadmin: false
+        }
+      })
+      const accessToken = sign(account.id.toString(), env.jwtSecret)
+      await request(app)
+        .get('/api/load-roles')
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
   })
 })
