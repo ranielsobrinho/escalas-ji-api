@@ -19,6 +19,10 @@ describe('AccountPgRepository', () => {
 
   beforeEach(async () => {
     await prisma.users.deleteMany({ where: { email: 'valid_email@mail.com' } })
+    await prisma.users.deleteMany({ where: { email: 'other_email@mail.com' } })
+    await prisma.users.deleteMany({
+      where: { email: 'other_valid_email@mail.com' }
+    })
     await prisma.users.deleteMany({ where: { email: 'any_email@mail.com' } })
   })
 
@@ -83,6 +87,30 @@ describe('AccountPgRepository', () => {
       const sut = makeSut()
       const account = await sut.loadById('-1')
       expect(account).toBeFalsy()
+    })
+  })
+
+  describe('load()', () => {
+    test('Should return accounts if load succeeds', async () => {
+      const sut = makeSut()
+      await prisma.users.createMany({
+        data: [
+          {
+            name: 'valid_name',
+            email: 'valid_email@mail.com',
+            password: 'hashed_password',
+            isadmin: false
+          },
+          {
+            name: 'other_name',
+            email: 'other_email@mail.com',
+            password: 'hashed_password',
+            isadmin: false
+          }
+        ]
+      })
+      const account = await sut.load()
+      expect(account).toBeTruthy()
     })
   })
 })
