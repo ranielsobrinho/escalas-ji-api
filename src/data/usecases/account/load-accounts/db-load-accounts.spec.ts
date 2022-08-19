@@ -21,15 +21,32 @@ const makeFakeAccounts = (): AccountModel[] => {
   ]
 }
 
+const makeFakeLoadAccounts = (): LoadAccountsRepository => {
+  class LoadAccountsRepositoryStub implements LoadAccountsRepository {
+    async load(): Promise<AccountModel[]> {
+      return Promise.resolve(makeFakeAccounts())
+    }
+  }
+  return new LoadAccountsRepositoryStub()
+}
+
+type SutTypes = {
+  sut: DbLoadAccounts
+  loadAccountsRepositoryStub: LoadAccountsRepository
+}
+
+const makeSut = (): SutTypes => {
+  const loadAccountsRepositoryStub = makeFakeLoadAccounts()
+  const sut = new DbLoadAccounts(loadAccountsRepositoryStub)
+  return {
+    sut,
+    loadAccountsRepositoryStub
+  }
+}
+
 describe('DbLoadAccounts', () => {
   test('Should call LoadAccountsRepository', async () => {
-    class LoadAccountsRepositoryStub implements LoadAccountsRepository {
-      async load(): Promise<AccountModel[]> {
-        return Promise.resolve(makeFakeAccounts())
-      }
-    }
-    const loadAccountsRepositoryStub = new LoadAccountsRepositoryStub()
-    const sut = new DbLoadAccounts(loadAccountsRepositoryStub)
+    const { sut, loadAccountsRepositoryStub } = makeSut()
     const loadSpy = jest.spyOn(loadAccountsRepositoryStub, 'load')
     await sut.load()
     expect(loadSpy).toHaveBeenCalled()
