@@ -36,11 +36,11 @@ export class AccountPgRepository
     return account && map(account)
   }
 
-  async loadById(id: string): Promise<boolean> {
+  async loadById(id: string): Promise<AccountModel> {
     const intId = Number(id)
     const result = await this.prisma.users.findUnique({ where: { id: intId } })
     if (result) {
-      return true
+      return map(result)
     }
   }
 }

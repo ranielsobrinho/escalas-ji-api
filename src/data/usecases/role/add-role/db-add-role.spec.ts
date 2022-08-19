@@ -2,11 +2,20 @@ import { RoleModel } from '../../../../domain/models/role'
 import { AddRoleRepository } from '../../../protocols/db/role/add-role-repository'
 import { LoadAccountByIdRepository } from '../../../protocols/db/account/load-account-by-id-repository'
 import { DbAddRole } from './db-add-role'
+import { AccountModel } from '../../account/add-account/db-add-account-protocols'
+
+const makeFakeAccount = (): AccountModel => ({
+  id: 'valid_id',
+  name: 'valid_name',
+  email: 'valid_email@mail.com',
+  password: 'hashed_password',
+  isAdmin: false
+})
 
 const makeFakeLoadById = (): LoadAccountByIdRepository => {
   class LoadAccountByIdRepositoryStub implements LoadAccountByIdRepository {
-    async loadById(id: string): Promise<boolean> {
-      return Promise.resolve(true)
+    async loadById(id: string): Promise<AccountModel> {
+      return Promise.resolve(makeFakeAccount())
     }
   }
   return new LoadAccountByIdRepositoryStub()
@@ -60,7 +69,7 @@ describe('DbAddRole', () => {
     const { sut, loadAccountByIdRepositoryStub } = makeSut()
     jest
       .spyOn(loadAccountByIdRepositoryStub, 'loadById')
-      .mockReturnValueOnce(Promise.resolve(false))
+      .mockReturnValueOnce(Promise.resolve(null))
     const isAccount = await sut.add({
       name: 'any_role',
       userId: 'any_id'
