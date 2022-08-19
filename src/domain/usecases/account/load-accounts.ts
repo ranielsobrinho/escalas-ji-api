@@ -1,5 +1,5 @@
 import { AccountModel } from '../../models/account'
 
-export interface LoadUsers {
+export interface LoadAccounts {
   load(): Promise<AccountModel[]>
 }
