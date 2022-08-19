@@ -21,7 +21,17 @@ export class RolePgRepository
   }
 
   async load(): Promise<RoleModel[]> {
-    const roles = await this.prisma.role.findMany()
+    const roles = await this.prisma.role.findMany({
+      include: {
+        users: {
+          select: {
+            name: true,
+            email: true,
+            isadmin: true
+          }
+        }
+      }
+    })
     const mappedRoles = roles.map((role) => map(role))
     return mappedRoles
   }
