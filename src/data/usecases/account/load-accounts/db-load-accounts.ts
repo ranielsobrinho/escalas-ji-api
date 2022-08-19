@@ -7,7 +7,7 @@ export class DbLoadAccounts implements LoadAccounts {
     private readonly loadAccountsRepository: LoadAccountsRepository
   ) {}
   async load(): Promise<AccountModel[]> {
-    await this.loadAccountsRepository.load()
-    return Promise.resolve(null)
+    const accounts = await this.loadAccountsRepository.load()
+    return accounts
   }
 }
