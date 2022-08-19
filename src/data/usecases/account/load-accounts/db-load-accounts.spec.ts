@@ -51,4 +51,15 @@ describe('DbLoadAccounts', () => {
     await sut.load()
     expect(loadSpy).toHaveBeenCalled()
   })
+
+  test('Should throw if LoadAccountsRepository throws', async () => {
+    const { sut, loadAccountsRepositoryStub } = makeSut()
+    jest
+      .spyOn(loadAccountsRepositoryStub, 'load')
+      .mockImplementationOnce(() => {
+        throw new Error()
+      })
+    const response = sut.load()
+    await expect(response).rejects.toThrow()
+  })
 })
