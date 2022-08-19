@@ -1,5 +1,4 @@
 import { LoadRoles } from '../../../../domain/usecases/roles/load-roles'
-import { ServerError } from '../../../errors'
 import { ok, serverError } from '../../../helpers/http-helper'
 import { RoleModel } from '../add-role/add-role-controller-protocols'
 import { LoadRolesController } from './load-roles-controller'
