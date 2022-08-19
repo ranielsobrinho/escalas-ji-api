@@ -62,4 +62,10 @@ describe('DbLoadAccounts', () => {
     const response = sut.load()
     await expect(response).rejects.toThrow()
   })
+
+  test('Should return accounts on success', async () => {
+    const { sut } = makeSut()
+    const accounts = await sut.load()
+    expect(accounts).toEqual(makeFakeAccounts())
+  })
 })
