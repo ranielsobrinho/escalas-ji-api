@@ -51,9 +51,9 @@ describe('LoadRolesController', () => {
 
   test('Should return 500 if LoadRoles throws', async () => {
     const { sut, loadRolesStub } = makeSut()
-    jest.spyOn(loadRolesStub, 'load').mockImplementationOnce(() => {
-      throw new Error()
-    })
+    jest
+      .spyOn(loadRolesStub, 'load')
+      .mockReturnValueOnce(Promise.reject(new Error()))
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(serverError(new Error()))
   })
