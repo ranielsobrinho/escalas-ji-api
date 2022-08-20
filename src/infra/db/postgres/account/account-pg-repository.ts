@@ -47,7 +47,15 @@ export class AccountPgRepository
   }
 
   async load(): Promise<AccountModel[]> {
-    const accounts = await this.prisma.users.findMany()
+    const accounts = await this.prisma.users.findMany({
+      include: {
+        role: {
+          select: {
+            name: true
+          }
+        }
+      }
+    })
     return mapAccounts(accounts)
   }
 }
