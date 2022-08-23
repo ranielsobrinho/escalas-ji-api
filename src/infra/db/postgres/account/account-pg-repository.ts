@@ -40,7 +40,16 @@ export class AccountPgRepository
 
   async loadById(id: string): Promise<AccountModel> {
     const intId = Number(id)
-    const result = await this.prisma.users.findUnique({ where: { id: intId } })
+    const result = await this.prisma.users.findUnique({
+      where: { id: intId },
+      include: {
+        role: {
+          select: {
+            name: true
+          }
+        }
+      }
+    })
     if (result) {
       return map(result)
     }
