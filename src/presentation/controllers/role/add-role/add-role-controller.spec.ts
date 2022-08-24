@@ -1,5 +1,5 @@
 import { MissingParamError, ServerError } from '../../../errors'
-import { badRequest, ok } from '../../../helpers/http-helper'
+import { badRequest, ok, serverError } from '../../../helpers/http-helper'
 import { HttpRequest } from '../../../protocols'
 import { Validation, AddRole, RoleModel } from './add-role-controller-protocols'
 import { AddRoleController } from './add-role-controller'
@@ -63,14 +63,22 @@ describe('AddRoleController', () => {
     })
   })
 
+  test('Should return 400 if AddRole returns null', async () => {
+    const { sut, addRoleStub } = makeSut()
+    jest.spyOn(addRoleStub, 'add').mockReturnValueOnce(Promise.resolve(null))
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(
+      badRequest(new Error('Usuário já tem essa função'))
+    )
+  })
+
   test('Should return 500 if AddRole throws', async () => {
     const { sut, addRoleStub } = makeSut()
     jest.spyOn(addRoleStub, 'add').mockImplementationOnce(() => {
       throw new Error()
     })
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new ServerError('Internal server error'))
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should return a new role on success', async () => {

@@ -1,17 +1,19 @@
 import { AddAccountRepository } from '../../../../data/protocols/db/account/add-account-repository'
 import { AccountModel } from '../../../../domain/models/account'
 import { AddAccountModel } from '../../../../domain/usecases/account/add-account'
-import { map } from './account-mapper'
+import { map, mapAccounts } from './account-mapper'
 import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/account/load-account-by-email-repository'
 
 import { PrismaClient } from '@prisma/client'
 import { LoadAccountByIdRepository } from '../../../../data/protocols/db/account/load-account-by-id-repository'
+import { LoadAccountsRepository } from '../../../../data/protocols/db/account/load-accounts-repository'
 
 export class AccountPgRepository
   implements
     AddAccountRepository,
     LoadAccountByEmailRepository,
-    LoadAccountByIdRepository
+    LoadAccountByIdRepository,
+    LoadAccountsRepository
 {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -36,11 +38,33 @@ export class AccountPgRepository
     return account && map(account)
   }
 
-  async loadById(id: string): Promise<boolean> {
+  async loadById(id: string): Promise<AccountModel> {
     const intId = Number(id)
-    const result = await this.prisma.users.findUnique({ where: { id: intId } })
+    const result = await this.prisma.users.findUnique({
+      where: { id: intId },
+      include: {
+        role: {
+          select: {
+            name: true
+          }
+        }
+      }
+    })
     if (result) {
-      return true
+      return map(result)
     }
+  }
+
+  async load(): Promise<AccountModel[]> {
+    const accounts = await this.prisma.users.findMany({
+      include: {
+        role: {
+          select: {
+            name: true
+          }
+        }
+      }
+    })
+    return mapAccounts(accounts)
   }
 }

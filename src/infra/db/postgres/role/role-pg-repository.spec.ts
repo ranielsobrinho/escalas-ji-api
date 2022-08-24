@@ -35,4 +35,13 @@ describe('RolePgRepository', () => {
       expect(role.userId).toBe(account.id.toString())
     })
   })
+
+  describe('load()', () => {
+    test('Should return an array of roles on success', async () => {
+      const sut = makeSut()
+      const role = await sut.load()
+      expect(role).toBeTruthy()
+      expect(role).toBeInstanceOf(Array)
+    })
+  })
 })

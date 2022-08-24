@@ -9,8 +9,12 @@ export class DbAddRole implements AddRole {
   ) {}
 
   async add({ name, userId }: AddRole.Params): Promise<AddRole.Result> {
-    const isValid = await this.loadAccountByIdRepository.loadById(userId)
-    if (isValid) {
+    const account = await this.loadAccountByIdRepository.loadById(userId)
+    if (!account) {
+      return null
+    }
+    const roleExists = account.role?.find((el) => el.name === name)
+    if (!roleExists) {
       const role = await this.addRoleRepository.add(name, userId)
       return { role }
     }
