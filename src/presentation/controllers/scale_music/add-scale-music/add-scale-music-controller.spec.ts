@@ -2,6 +2,7 @@ import { AddScaleMusic } from '../../../../domain/usecases/scale-music/add-scale
 import { noContent, serverError } from '../../../helpers/http-helper'
 import { HttpRequest } from '../../../protocols'
 import { AddScaleMusicController } from './add-scale-music-controller'
+import { Validation } from '../../../helpers/validators/validation'
 
 const makeFakeAddScale = (): AddScaleMusic => {
   class AddScaleMusicStub implements AddScaleMusic {
@@ -18,17 +19,29 @@ const httpRequest: HttpRequest = {
   }
 }
 
+const makeValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate(input: any): Error {
+      return null
+    }
+  }
+  return new ValidationStub()
+}
+
 type SutTypes = {
   sut: AddScaleMusicController
   addScaleMusicStub: AddScaleMusic
+  validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const addScaleMusicStub = makeFakeAddScale()
-  const sut = new AddScaleMusicController(addScaleMusicStub)
+  const validationStub = makeValidation()
+  const sut = new AddScaleMusicController(addScaleMusicStub, validationStub)
   return {
     sut,
-    addScaleMusicStub
+    addScaleMusicStub,
+    validationStub
   }
 }
 
@@ -53,5 +66,12 @@ describe('AddScaleMusicController', () => {
     const { sut } = makeSut()
     const response = await sut.handle(httpRequest)
     expect(response).toEqual(noContent())
+  })
+
+  test('Should call Validation with correct values', async () => {
+    const { sut, validationStub } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    await sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })
