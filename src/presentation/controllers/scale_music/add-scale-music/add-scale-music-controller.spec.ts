@@ -1,5 +1,5 @@
 import { AddScaleMusic } from '../../../../domain/usecases/scale-music/add-scale-music'
-import { serverError } from '../../../helpers/http-helper'
+import { noContent, serverError } from '../../../helpers/http-helper'
 import { HttpRequest } from '../../../protocols'
 import { AddScaleMusicController } from './add-scale-music-controller'
 
@@ -47,5 +47,11 @@ describe('AddScaleMusicController', () => {
       .mockReturnValueOnce(Promise.reject(new Error()))
     const response = await sut.handle(httpRequest)
     expect(response).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 204 if AddScaleMusic succeeds', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle(httpRequest)
+    expect(response).toEqual(noContent())
   })
 })
