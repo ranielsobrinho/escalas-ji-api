@@ -1,5 +1,5 @@
 import { AddScaleMusic } from '../../../../domain/usecases/scale-music/add-scale-music'
-import { serverError } from '../../../helpers/http-helper'
+import { noContent, serverError } from '../../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
 
 export class AddScaleMusicController implements Controller {
@@ -8,7 +8,7 @@ export class AddScaleMusicController implements Controller {
     try {
       const { music_link } = httpRequest.body
       await this.addScaleMusic.add(music_link)
-      return Promise.resolve(null)
+      return noContent()
     } catch (error) {
       return serverError(error)
     }
