@@ -11,6 +11,12 @@ const makeFakeAddScale = (): AddScaleMusic => {
   return new AddScaleMusicStub()
 }
 
+const httpRequest: HttpRequest = {
+  body: {
+    music_link: 'any_link'
+  }
+}
+
 type SutTypes = {
   sut: AddScaleMusicController
   addScaleMusicStub: AddScaleMusic
@@ -29,11 +35,6 @@ describe('AddScaleMusicController', () => {
   test('Should call AddScaleMusic with correct values', async () => {
     const { sut, addScaleMusicStub } = makeSut()
     const addScaleSpy = jest.spyOn(addScaleMusicStub, 'add')
-    const httpRequest: HttpRequest = {
-      body: {
-        music_link: 'any_link'
-      }
-    }
     await sut.handle(httpRequest)
     expect(addScaleSpy).toHaveBeenCalledWith('any_link')
   })
