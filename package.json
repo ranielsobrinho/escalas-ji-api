@@ -1,6 +1,6 @@
 {
   "name": "escalas-ji-api",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "description": "An api made with clean architecture and TDD, design patterns and more.",
   "main": "index.js",
   "scripts": {
