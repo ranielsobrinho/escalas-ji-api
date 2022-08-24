@@ -1,13 +1,13 @@
-import { AddScaleMusic } from '../../../../domain/usecases/scale-music/add-scale-music'
+import { AddScaleMusicController } from './add-scale-music-controller'
+import { MissingParamError } from '../../../errors'
 import {
+  AddScaleMusic,
   badRequest,
   noContent,
-  serverError
-} from '../../../helpers/http-helper'
-import { HttpRequest } from '../../../protocols'
-import { AddScaleMusicController } from './add-scale-music-controller'
-import { Validation } from '../../../helpers/validators/validation'
-import { MissingParamError } from '../../../errors'
+  serverError,
+  HttpRequest,
+  Validation
+} from './add-scale-music-controller-protocols'
 
 const makeFakeAddScale = (): AddScaleMusic => {
   class AddScaleMusicStub implements AddScaleMusic {

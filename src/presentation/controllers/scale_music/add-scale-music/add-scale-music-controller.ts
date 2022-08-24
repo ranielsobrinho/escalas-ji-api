@@ -1,11 +1,13 @@
-import { AddScaleMusic } from '../../../../domain/usecases/scale-music/add-scale-music'
 import {
+  AddScaleMusic,
   badRequest,
   noContent,
-  serverError
-} from '../../../helpers/http-helper'
-import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
-import { Validation } from '../../../helpers/validators/validation'
+  serverError,
+  Controller,
+  HttpRequest,
+  HttpResponse,
+  Validation
+} from './add-scale-music-controller-protocols'
 
 export class AddScaleMusicController implements Controller {
   constructor(
