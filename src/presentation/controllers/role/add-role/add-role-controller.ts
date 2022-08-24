@@ -16,6 +16,9 @@ export class AddRoleController implements Controller {
       }
       const { name, userId } = httpRequest.body
       const role = await this.addRole.add({ name, userId })
+      if (!role) {
+        return badRequest(new Error('Usuário já tem essa função'))
+      }
       return ok(role)
     } catch (error) {
       return serverError(error)
