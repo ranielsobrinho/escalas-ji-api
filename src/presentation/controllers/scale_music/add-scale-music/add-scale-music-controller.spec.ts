@@ -1,8 +1,13 @@
 import { AddScaleMusic } from '../../../../domain/usecases/scale-music/add-scale-music'
-import { noContent, serverError } from '../../../helpers/http-helper'
+import {
+  badRequest,
+  noContent,
+  serverError
+} from '../../../helpers/http-helper'
 import { HttpRequest } from '../../../protocols'
 import { AddScaleMusicController } from './add-scale-music-controller'
 import { Validation } from '../../../helpers/validators/validation'
+import { MissingParamError } from '../../../errors'
 
 const makeFakeAddScale = (): AddScaleMusic => {
   class AddScaleMusicStub implements AddScaleMusic {
@@ -73,5 +78,14 @@ describe('AddScaleMusicController', () => {
     const validateSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return 400 if Validation returns a error', async () => {
+    const { sut, validationStub } = makeSut()
+    jest
+      .spyOn(validationStub, 'validate')
+      .mockReturnValueOnce(new MissingParamError('any_field'))
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
   })
 })
