@@ -30,6 +30,7 @@ describe('DbAddScaleMusic', () => {
     const addScaleMusicSpy = jest.spyOn(addScaleMusicRepositoryStub, 'add')
     await sut.add({ music_link: 'any_link' })
     expect(addScaleMusicSpy).toHaveBeenCalledWith('any_link')
+    expect(addScaleMusicSpy).toHaveBeenCalledTimes(1)
   })
 
   test('Should throw if AddScaleMusicRepository throws', async () => {
