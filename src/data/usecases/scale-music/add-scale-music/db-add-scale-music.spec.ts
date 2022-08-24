@@ -1,15 +1,32 @@
 import { AddScaleMusicRepository } from '../../../protocols/db/scale-music/add-scale-music-repository'
 import { DbAddScaleMusic } from './db-add-scale-music'
 
+const makeFakeAddScaleRepository = (): AddScaleMusicRepository => {
+  class AddScaleMusicRepositoryStub implements AddScaleMusicRepository {
+    async add(music_link: string): Promise<void> {
+      return Promise.resolve(null)
+    }
+  }
+  return new AddScaleMusicRepositoryStub()
+}
+
+type SutTypes = {
+  sut: DbAddScaleMusic
+  addScaleMusicRepositoryStub: AddScaleMusicRepository
+}
+
+const makeSut = (): SutTypes => {
+  const addScaleMusicRepositoryStub = makeFakeAddScaleRepository()
+  const sut = new DbAddScaleMusic(addScaleMusicRepositoryStub)
+  return {
+    sut,
+    addScaleMusicRepositoryStub
+  }
+}
+
 describe('DbAddScaleMusic', () => {
   test('Should call AddScaleMusicRepository with correct values', async () => {
-    class AddScaleMusicRepositoryStub implements AddScaleMusicRepository {
-      async add(music_link: string): Promise<void> {
-        return Promise.resolve(null)
-      }
-    }
-    const addScaleMusicRepositoryStub = new AddScaleMusicRepositoryStub()
-    const sut = new DbAddScaleMusic(addScaleMusicRepositoryStub)
+    const { sut, addScaleMusicRepositoryStub } = makeSut()
     const addScaleMusicSpy = jest.spyOn(addScaleMusicRepositoryStub, 'add')
     await sut.add({ music_link: 'any_link' })
     expect(addScaleMusicSpy).toHaveBeenCalledWith('any_link')
