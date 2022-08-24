@@ -12,6 +12,21 @@ const makeFakeAccount = (): AccountModel => ({
   isAdmin: false
 })
 
+const makeFakeAccountWithRole = (): AccountModel => ({
+  id: 'valid_id',
+  name: 'valid_name',
+  email: 'valid_email@mail.com',
+  password: 'hashed_password',
+  role: [
+    {
+      id: 'any_id',
+      name: 'any_role',
+      userId: 'any_user_id'
+    }
+  ],
+  isAdmin: false
+})
+
 const makeFakeLoadById = (): LoadAccountByIdRepository => {
   class LoadAccountByIdRepositoryStub implements LoadAccountByIdRepository {
     async loadById(id: string): Promise<AccountModel> {
@@ -65,11 +80,23 @@ describe('DbAddRole', () => {
     expect(loadByIdSpy).toHaveBeenCalledWith('any_id')
   })
 
-  test('Should return null if LoadAccountByIdRepository returns false', async () => {
+  test('Should return null if LoadAccountByIdRepository returns null', async () => {
     const { sut, loadAccountByIdRepositoryStub } = makeSut()
     jest
       .spyOn(loadAccountByIdRepositoryStub, 'loadById')
       .mockReturnValueOnce(Promise.resolve(null))
+    const isAccount = await sut.add({
+      name: 'any_role',
+      userId: 'any_id'
+    })
+    expect(isAccount).toBeNull()
+  })
+
+  test('Should return null if LoadAccountByIdRepository returns an account with the same name provided', async () => {
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
+    jest
+      .spyOn(loadAccountByIdRepositoryStub, 'loadById')
+      .mockReturnValueOnce(Promise.resolve(makeFakeAccountWithRole()))
     const isAccount = await sut.add({
       name: 'any_role',
       userId: 'any_id'
@@ -101,9 +128,9 @@ describe('DbAddRole', () => {
 
   test('Should throw if AddRoleRepository throws', async () => {
     const { sut, addRoleRepositoryStub } = makeSut()
-    jest
-      .spyOn(addRoleRepositoryStub, 'add')
-      .mockReturnValueOnce(Promise.reject(new Error()))
+    jest.spyOn(addRoleRepositoryStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
     const promise = sut.add({
       name: 'any_role',
       userId: 'any_id'
