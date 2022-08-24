@@ -31,4 +31,15 @@ describe('DbAddScaleMusic', () => {
     await sut.add({ music_link: 'any_link' })
     expect(addScaleMusicSpy).toHaveBeenCalledWith('any_link')
   })
+
+  test('Should throw if AddScaleMusicRepository throws', async () => {
+    const { sut, addScaleMusicRepositoryStub } = makeSut()
+    jest
+      .spyOn(addScaleMusicRepositoryStub, 'add')
+      .mockImplementationOnce(() => {
+        throw new Error()
+      })
+    const promise = sut.add({ music_link: 'any_link' })
+    await expect(promise).rejects.toThrow()
+  })
 })
