@@ -22,3 +22,8 @@ model role {
   users  users  @relation(fields: [userid], references: [id])
   userid Int
 }
+
+model scale_music {
+  id         Int    @id @default(autoincrement())
+  music_link String
+}
