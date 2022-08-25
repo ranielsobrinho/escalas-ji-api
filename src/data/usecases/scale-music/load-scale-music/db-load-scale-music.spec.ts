@@ -46,4 +46,13 @@ describe('DbLoadScaleMusic', () => {
     expect(loadSpy).toHaveBeenCalled()
     expect(loadSpy).toHaveBeenCalledTimes(1)
   })
+
+  test('Should throw if LoadScaleMusicRepository throws', async () => {
+    const { sut, loadScaleMusicRepositoryStub } = makeSut()
+    jest
+      .spyOn(loadScaleMusicRepositoryStub, 'load')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+    const response = sut.load()
+    await expect(response).rejects.toThrow()
+  })
 })
