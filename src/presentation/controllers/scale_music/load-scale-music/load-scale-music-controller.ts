@@ -1,11 +1,11 @@
-import { LoadScaleMusics } from '../../../../domain/usecases/scale-music/load-scale-music'
 import {
+  LoadScaleMusics,
   Controller,
   HttpRequest,
   HttpResponse,
   serverError,
   ok
-} from '../add-scale-music/add-scale-music-controller-protocols'
+} from './load-scale-music-controller-protocols'
 
 export class LoadScaleMusicController implements Controller {
   constructor(private readonly loadScaleMusic: LoadScaleMusics) {}

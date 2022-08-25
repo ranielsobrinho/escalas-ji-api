@@ -1,7 +1,10 @@
-import { ScaleMusic } from '../../../../domain/models/scale_music'
-import { LoadScaleMusics } from '../../../../domain/usecases/scale-music/load-scale-music'
-import { serverError, ok } from '../../../helpers/http-helper'
 import { LoadScaleMusicController } from './load-scale-music-controller'
+import {
+  LoadScaleMusics,
+  ScaleMusic,
+  serverError,
+  ok
+} from './load-scale-music-controller-protocols'
 
 const makeScaleMusic = (): ScaleMusic[] => {
   return [
