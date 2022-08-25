@@ -1,6 +1,6 @@
 import { ScaleMusic } from '../../../../domain/models/scale_music'
 import { LoadScaleMusics } from '../../../../domain/usecases/scale-music/load-scale-music'
-import { serverError } from '../../../helpers/http-helper'
+import { serverError, ok } from '../../../helpers/http-helper'
 import { LoadScaleMusicController } from './load-scale-music-controller'
 
 const makeScaleMusic = (): ScaleMusic[] => {
@@ -55,5 +55,11 @@ describe('LoadScaleMusicController', () => {
     })
     const response = await sut.handle({})
     expect(response).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 on LoadScaleMusic success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(ok(makeScaleMusic()))
   })
 })
