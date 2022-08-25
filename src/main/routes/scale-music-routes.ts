@@ -4,5 +4,5 @@ import { makeAddScaleMusicController } from '../factories/controllers/scale_musi
 import { auth } from '../middlewares/auth'
 
 export default (router: Router): void => {
-  router.get('/scale-music', auth, adaptRoute(makeAddScaleMusicController()))
+  router.post('/scale-music', auth, adaptRoute(makeAddScaleMusicController()))
 }
