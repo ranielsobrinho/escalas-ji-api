@@ -27,4 +27,13 @@ describe('ScaleMusicPgRepository', () => {
       expect(music.music_link).toBe('any_link')
     })
   })
+
+  describe('load()', () => {
+    test('Should return music links on success', async () => {
+      const sut = makeSut()
+      const musics = await sut.load()
+      expect(musics).toBeInstanceOf(Array)
+      expect(musics).toBeTruthy()
+    })
+  })
 })
