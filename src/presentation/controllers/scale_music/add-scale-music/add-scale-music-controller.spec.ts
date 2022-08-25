@@ -55,7 +55,7 @@ describe('AddScaleMusicController', () => {
     const { sut, addScaleMusicStub } = makeSut()
     const addScaleSpy = jest.spyOn(addScaleMusicStub, 'add')
     await sut.handle(httpRequest)
-    expect(addScaleSpy).toHaveBeenCalledWith('any_link')
+    expect(addScaleSpy).toHaveBeenCalledWith({ music_link: 'any_link' })
   })
 
   test('Should return 500 if AddScaleMusic throws', async () => {

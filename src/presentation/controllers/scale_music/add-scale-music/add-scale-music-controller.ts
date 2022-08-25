@@ -14,14 +14,16 @@ export class AddScaleMusicController implements Controller {
     private readonly addScaleMusic: AddScaleMusic,
     private readonly validation: Validation
   ) {}
+
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(httpRequest.body)
       if (error) {
         return badRequest(error)
       }
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       const { music_link } = httpRequest.body
-      await this.addScaleMusic.add(music_link)
+      await this.addScaleMusic.add({ music_link })
       return noContent()
     } catch (error) {
       return serverError(error)
