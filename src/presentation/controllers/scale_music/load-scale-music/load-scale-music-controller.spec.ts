@@ -15,15 +15,32 @@ const makeScaleMusic = (): ScaleMusic[] => {
   ]
 }
 
+const makeLoadScaleMusicStub = (): LoadScaleMusics => {
+  class LoadScaleMusicStub implements LoadScaleMusics {
+    async load(): Promise<ScaleMusic[]> {
+      return Promise.resolve(makeScaleMusic())
+    }
+  }
+  return new LoadScaleMusicStub()
+}
+
+type SutTypes = {
+  sut: LoadScaleMusicController
+  loadScaleMusicStub: LoadScaleMusics
+}
+
+const makeSut = (): SutTypes => {
+  const loadScaleMusicStub = makeLoadScaleMusicStub()
+  const sut = new LoadScaleMusicController(loadScaleMusicStub)
+  return {
+    sut,
+    loadScaleMusicStub
+  }
+}
+
 describe('LoadScaleMusicController', () => {
   test('Should call LoadScaleMusic once', async () => {
-    class LoadScaleMusicStub implements LoadScaleMusics {
-      async load(): Promise<ScaleMusic[]> {
-        return Promise.resolve(makeScaleMusic())
-      }
-    }
-    const loadScaleMusicStub = new LoadScaleMusicStub()
-    const sut = new LoadScaleMusicController(loadScaleMusicStub)
+    const { sut, loadScaleMusicStub } = makeSut()
     const loadSpy = jest.spyOn(loadScaleMusicStub, 'load')
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
