@@ -3,7 +3,8 @@ import {
   Controller,
   HttpRequest,
   HttpResponse,
-  serverError
+  serverError,
+  ok
 } from '../add-scale-music/add-scale-music-controller-protocols'
 
 export class LoadScaleMusicController implements Controller {
@@ -11,8 +12,8 @@ export class LoadScaleMusicController implements Controller {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      await this.loadScaleMusic.load()
-      return Promise.resolve(null)
+      const musics = await this.loadScaleMusic.load()
+      return ok(musics)
     } catch (error) {
       return serverError(error)
     }
