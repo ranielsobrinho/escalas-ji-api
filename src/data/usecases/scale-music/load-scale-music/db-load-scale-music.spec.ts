@@ -55,4 +55,10 @@ describe('DbLoadScaleMusic', () => {
     const response = sut.load()
     await expect(response).rejects.toThrow()
   })
+
+  test('Should return music links on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.load()
+    expect(response).toEqual(makeScaleMusic())
+  })
 })
