@@ -8,7 +8,7 @@ export class DbLoadScaleMusic implements LoadScaleMusics {
   ) {}
 
   async load(): Promise<ScaleMusic[]> {
-    await this.loadScaleMusicRepository.load()
-    return Promise.resolve(null)
+    const scaleMusics = await this.loadScaleMusicRepository.load()
+    return scaleMusics
   }
 }
