@@ -52,5 +52,20 @@ describe('ScaleMusic Routes', () => {
     test('Should return 403 on load scale music without token', async () => {
       await request(app).get('/api/scale-music').expect(403)
     })
+    test('Should return 200 on load scale music with token', async () => {
+      const account = await prisma.users.create({
+        data: {
+          name: 'valid_name',
+          email: 'valid_email@mail.com',
+          password: 'hashed_password',
+          isadmin: false
+        }
+      })
+      const accessToken = sign(account.id.toString(), env.jwtSecret)
+      await request(app)
+        .get('/api/scale-music')
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
   })
 })
