@@ -47,4 +47,10 @@ describe('ScaleMusic Routes', () => {
         .expect(204)
     })
   })
+
+  describe('GET /scale-music', () => {
+    test('Should return 403 on load scale music without token', async () => {
+      await request(app).get('/api/scale-music').expect(403)
+    })
+  })
 })
