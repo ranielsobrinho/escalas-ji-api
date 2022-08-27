@@ -10,7 +10,7 @@ datasource db {
 model users {
   id       Int     @id @default(autoincrement())
   name     String
-  email    String
+  email    String  @unique
   password String
   isadmin  Boolean @default(false)
   role     role[]
@@ -26,4 +26,16 @@ model role {
 model scale_music {
   id         Int    @id @default(autoincrement())
   music_link String
+}
+
+model scale {
+  id              Int      @id @default(autoincrement())
+  singers         Int[]
+  bass            Int
+  guitar          Int
+  acoustic_guitar Int
+  keyboard        Int
+  drum            Int
+  musics          Int[]
+  date            DateTime @default(now())
 }
