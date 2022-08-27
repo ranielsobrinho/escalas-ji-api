@@ -65,5 +65,15 @@ describe('DbAddScale', () => {
     const addScaleSpy = jest.spyOn(addScaleRepositoryStub, 'add')
     await sut.add(makeFakeAddScale())
     expect(addScaleSpy).toHaveBeenCalledWith(makeFakeAddScale())
+    expect(addScaleSpy).toHaveBeenCalledTimes(1)
+  })
+
+  test('Should throw if AddScaleRepository throws', async () => {
+    const { sut, addScaleRepositoryStub } = makeSut()
+    jest.spyOn(addScaleRepositoryStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const promise = sut.add(makeFakeAddScale())
+    await expect(promise).rejects.toThrow()
   })
 })
