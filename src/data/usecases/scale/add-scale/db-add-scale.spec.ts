@@ -28,6 +28,29 @@ const makeFakeAddScale = (): AddScaleParams => ({
   date: new Date()
 })
 
+const makeFakeAddScaleRepositoryStub = (): AddScaleRepository => {
+  class AddScaleRepositoryStub implements AddScaleRepository {
+    async add(params: AddScaleParams): Promise<void> {
+      return Promise.resolve(null)
+    }
+  }
+  return new AddScaleRepositoryStub()
+}
+
+type SutTypes = {
+  sut: DbAddScale
+  addScaleRepositoryStub: AddScaleRepository
+}
+
+const makeSut = (): SutTypes => {
+  const addScaleRepositoryStub = makeFakeAddScaleRepositoryStub()
+  const sut = new DbAddScale(addScaleRepositoryStub)
+  return {
+    sut,
+    addScaleRepositoryStub
+  }
+}
+
 describe('DbAddScale', () => {
   beforeAll(() => {
     MockDate.set(new Date())
@@ -38,13 +61,7 @@ describe('DbAddScale', () => {
   })
 
   test('Should call AddScaleRepository with correct values', async () => {
-    class AddScaleRepositoryStub implements AddScaleRepository {
-      async add(params: AddScaleParams): Promise<void> {
-        return Promise.resolve(null)
-      }
-    }
-    const addScaleRepositoryStub = new AddScaleRepositoryStub()
-    const sut = new DbAddScale(addScaleRepositoryStub)
+    const { sut, addScaleRepositoryStub } = makeSut()
     const addScaleSpy = jest.spyOn(addScaleRepositoryStub, 'add')
     await sut.add(makeFakeAddScale())
     expect(addScaleSpy).toHaveBeenCalledWith(makeFakeAddScale())
