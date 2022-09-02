@@ -19,7 +19,7 @@ model users {
 model role {
   id     Int    @id @default(autoincrement())
   name   String
-  users  users  @relation(fields: [userid], references: [id])
+  users  users  @relation(fields: [userid], references: [id], onDelete: Cascade)
   userid Int
 }
 
