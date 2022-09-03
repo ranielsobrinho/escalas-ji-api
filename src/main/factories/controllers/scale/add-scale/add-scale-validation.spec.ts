@@ -16,7 +16,8 @@ describe('AddScaleValidation Factory', () => {
       'acousticGuitar',
       'keyboard',
       'drum',
-      'musics'
+      'musics',
+      'date'
     ]) {
       validations.push(new RequiredFieldValidation(field))
     }

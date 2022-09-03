@@ -11,7 +11,8 @@ export const makeAddScaleValidation = (): ValidationComposite => {
     'acousticGuitar',
     'keyboard',
     'drum',
-    'musics'
+    'musics',
+    'date'
   ]) {
     validations.push(new RequiredFieldValidation(field))
   }

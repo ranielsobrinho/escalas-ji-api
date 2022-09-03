@@ -44,7 +44,7 @@ describe('Scale Routes', () => {
               musicId: '1'
             }
           ],
-          date: new Date()
+          date: new Date('2019-05-27')
         })
         .expect(403)
     })
@@ -81,7 +81,7 @@ describe('Scale Routes', () => {
               musicId: '1'
             }
           ],
-          date: new Date()
+          date: new Date('2019-05-27')
         })
         .expect(204)
     })

@@ -22,7 +22,7 @@ const makeAddScale = (): AddScaleParams => ({
       musicId: '1'
     }
   ],
-  date: new Date()
+  date: new Date('2019-05-27')
 })
 
 describe('ScaleMusicPgRepository', () => {

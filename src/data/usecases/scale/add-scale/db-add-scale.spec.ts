@@ -25,7 +25,7 @@ const makeFakeAddScale = (): AddScaleParams => ({
       musicId: 'other_music_id'
     }
   ],
-  date: new Date()
+  date: new Date('2019-05-27')
 })
 
 const makeFakeAddScaleRepositoryStub = (): AddScaleRepository => {
