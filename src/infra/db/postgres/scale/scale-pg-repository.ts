@@ -17,7 +17,7 @@ export class ScalePgRepository implements AddScaleRepository {
         drum: Number(params.drum),
         keyboard: Number(params.keyboard),
         musics: musics,
-        date: new Date()
+        date: params.date
       }
     })
   }
