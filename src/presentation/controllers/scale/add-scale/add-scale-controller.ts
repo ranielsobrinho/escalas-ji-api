@@ -1,11 +1,13 @@
-import { AddScale } from '../../../../domain/usecases/scale/add-scale'
 import {
+  AddScale,
   badRequest,
   noContent,
-  serverError
-} from '../../../helpers/http-helper'
-import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
-import { Validation } from '../../login/login/login-controller-protocols'
+  serverError,
+  Controller,
+  HttpRequest,
+  HttpResponse,
+  Validation
+} from './add-scale-controller-protocols'
 
 export class AddScaleController implements Controller {
   constructor(

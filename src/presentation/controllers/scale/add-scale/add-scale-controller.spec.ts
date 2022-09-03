@@ -1,17 +1,15 @@
-import {
-  AddScale,
-  AddScaleParams
-} from '../../../../domain/usecases/scale/add-scale'
-import { HttpRequest } from '../../../protocols'
 import { AddScaleController } from './add-scale-controller'
 import MockDate from 'mockdate'
+import { MissingParamError } from '../../../errors'
 import {
+  AddScale,
+  AddScaleParams,
   badRequest,
   noContent,
-  serverError
-} from '../../../helpers/http-helper'
-import { Validation } from '../../login/login/login-controller-protocols'
-import { MissingParamError } from '../../../errors'
+  serverError,
+  HttpRequest,
+  Validation
+} from './add-scale-controller-protocols'
 
 const httpRequest: HttpRequest = {
   body: {
