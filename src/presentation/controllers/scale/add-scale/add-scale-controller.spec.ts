@@ -11,7 +11,7 @@ import {
   Validation
 } from './add-scale-controller-protocols'
 
-const httpRequest: HttpRequest = {
+const makeFakeRequest = (): HttpRequest => ({
   body: {
     singers: [
       {
@@ -33,7 +33,7 @@ const httpRequest: HttpRequest = {
     ],
     date: new Date()
   }
-}
+})
 
 const makeAddScaleStub = (): AddScale => {
   class AddScaleStub implements AddScale {
@@ -82,6 +82,7 @@ describe('AddScaleController', () => {
   test('Should call AddScale with correct values', async () => {
     const { sut, addScaleStub } = makeSut()
     const addScaleSpy = jest.spyOn(addScaleStub, 'add')
+    const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
     expect(addScaleSpy).toHaveBeenCalledWith(httpRequest.body)
   })
@@ -91,12 +92,14 @@ describe('AddScaleController', () => {
     jest
       .spyOn(addScaleStub, 'add')
       .mockReturnValueOnce(Promise.reject(new Error()))
+    const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should return 204 if AddScale succeeds', async () => {
     const { sut } = makeSut()
+    const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(noContent())
   })
@@ -104,6 +107,7 @@ describe('AddScaleController', () => {
   test('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
+    const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
   })
@@ -113,6 +117,7 @@ describe('AddScaleController', () => {
     jest
       .spyOn(validationStub, 'validate')
       .mockReturnValueOnce(new MissingParamError('any_field'))
+    const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
   })

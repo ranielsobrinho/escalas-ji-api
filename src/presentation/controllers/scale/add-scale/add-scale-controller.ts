@@ -21,16 +21,8 @@ export class AddScaleController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const {
-        singers,
-        bass,
-        guitar,
-        acousticGuitar,
-        keyboard,
-        drum,
-        musics,
-        date
-      } = httpRequest.body
+      const { singers, bass, guitar, acousticGuitar, keyboard, drum, musics } =
+        httpRequest.body
       await this.addScale.add({
         singers,
         bass,
@@ -39,7 +31,7 @@ export class AddScaleController implements Controller {
         keyboard,
         drum,
         musics,
-        date
+        date: new Date()
       })
       return noContent()
     } catch (error) {
