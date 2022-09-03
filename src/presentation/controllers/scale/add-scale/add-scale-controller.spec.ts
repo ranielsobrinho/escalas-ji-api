@@ -109,6 +109,7 @@ describe('AddScaleController', () => {
     await sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
   })
+
   test('Should return 400 if Validation returns a error', async () => {
     const { sut, validationStub } = makeSut()
     jest
