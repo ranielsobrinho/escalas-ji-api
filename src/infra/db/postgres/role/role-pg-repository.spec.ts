@@ -9,8 +9,8 @@ describe('RolePgRepository', () => {
   })
 
   beforeEach(async () => {
-    await prisma.users.deleteMany({ where: { email: 'valid_email@mail.com' } })
     await prisma.role.deleteMany({ where: { name: 'any_role' } })
+    await prisma.users.deleteMany({ where: { email: 'valid_email@mail.com' } })
   })
 
   const makeSut = (): RolePgRepository => {

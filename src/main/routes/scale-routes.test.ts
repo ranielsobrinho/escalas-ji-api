@@ -6,7 +6,7 @@ import { sign } from 'jsonwebtoken'
 import env from '../config/env'
 
 const prisma = new PrismaClient()
-describe('ScaleMusic Routes', () => {
+describe('Scale Routes', () => {
   beforeAll(async () => {
     await prisma.$connect()
     MockDate.set(new Date())
