@@ -1,5 +1,5 @@
 import { AddScale } from '../../../../domain/usecases/scale/add-scale'
-import { serverError } from '../../../helpers/http-helper'
+import { noContent, serverError } from '../../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
 
 export class AddScaleController implements Controller {
@@ -27,7 +27,7 @@ export class AddScaleController implements Controller {
         musics,
         date
       })
-      return Promise.resolve(null)
+      return noContent()
     } catch (error) {
       return serverError(error)
     }
