@@ -5,6 +5,7 @@ import {
 import { HttpRequest } from '../../../protocols'
 import { AddScaleController } from './add-scale-controller'
 import MockDate from 'mockdate'
+import { serverError } from '../../../helpers/http-helper'
 
 const httpRequest: HttpRequest = {
   body: {
@@ -61,10 +62,20 @@ describe('AddScaleController', () => {
   afterAll(() => {
     MockDate.reset()
   })
+
   test('Should call AddScale with correct values', async () => {
     const { sut, addScaleStub } = makeSut()
     const addScaleSpy = jest.spyOn(addScaleStub, 'add')
     await sut.handle(httpRequest)
     expect(addScaleSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return 500 if AddScale throws', async () => {
+    const { sut, addScaleStub } = makeSut()
+    jest
+      .spyOn(addScaleStub, 'add')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = await sut.handle(httpRequest)
+    expect(promise).toEqual(serverError(new Error()))
   })
 })
