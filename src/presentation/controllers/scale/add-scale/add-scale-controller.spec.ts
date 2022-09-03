@@ -6,6 +6,7 @@ import { HttpRequest } from '../../../protocols'
 import { AddScaleController } from './add-scale-controller'
 import MockDate from 'mockdate'
 import { noContent, serverError } from '../../../helpers/http-helper'
+import { Validation } from '../../login/login/login-controller-protocols'
 
 const httpRequest: HttpRequest = {
   body: {
@@ -40,17 +41,29 @@ const makeAddScaleStub = (): AddScale => {
   return new AddScaleStub()
 }
 
+const makeValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate(input: any): Error {
+      return null
+    }
+  }
+  return new ValidationStub()
+}
+
 type SutTypes = {
   sut: AddScaleController
   addScaleStub: AddScale
+  validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const addScaleStub = makeAddScaleStub()
-  const sut = new AddScaleController(addScaleStub)
+  const validationStub = makeValidation()
+  const sut = new AddScaleController(addScaleStub, validationStub)
   return {
     sut,
-    addScaleStub
+    addScaleStub,
+    validationStub
   }
 }
 
@@ -83,5 +96,12 @@ describe('AddScaleController', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(noContent())
+  })
+
+  test('Should call Validation with correct values', async () => {
+    const { sut, validationStub } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    await sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })
