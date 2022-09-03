@@ -1,5 +1,9 @@
 import { AddScale } from '../../../../domain/usecases/scale/add-scale'
-import { noContent, serverError } from '../../../helpers/http-helper'
+import {
+  badRequest,
+  noContent,
+  serverError
+} from '../../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
 import { Validation } from '../../login/login/login-controller-protocols'
 
@@ -11,7 +15,10 @@ export class AddScaleController implements Controller {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      this.validation.validate(httpRequest.body)
+      const error = this.validation.validate(httpRequest.body)
+      if (error) {
+        return badRequest(error)
+      }
       const {
         singers,
         bass,
