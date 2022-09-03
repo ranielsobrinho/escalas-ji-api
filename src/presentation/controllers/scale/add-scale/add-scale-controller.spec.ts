@@ -30,6 +30,29 @@ const httpRequest: HttpRequest = {
   }
 }
 
+const makeAddScaleStub = (): AddScale => {
+  class AddScaleStub implements AddScale {
+    async add(params: AddScaleParams): Promise<void> {
+      return Promise.resolve()
+    }
+  }
+  return new AddScaleStub()
+}
+
+type SutTypes = {
+  sut: AddScaleController
+  addScaleStub: AddScale
+}
+
+const makeSut = (): SutTypes => {
+  const addScaleStub = makeAddScaleStub()
+  const sut = new AddScaleController(addScaleStub)
+  return {
+    sut,
+    addScaleStub
+  }
+}
+
 describe('AddScaleController', () => {
   beforeAll(() => {
     MockDate.set(new Date())
@@ -39,13 +62,7 @@ describe('AddScaleController', () => {
     MockDate.reset()
   })
   test('Should call AddScale with correct values', async () => {
-    class AddScaleStub implements AddScale {
-      async add(params: AddScaleParams): Promise<void> {
-        return Promise.resolve()
-      }
-    }
-    const addScaleStub = new AddScaleStub()
-    const sut = new AddScaleController(addScaleStub)
+    const { sut, addScaleStub } = makeSut()
     const addScaleSpy = jest.spyOn(addScaleStub, 'add')
     await sut.handle(httpRequest)
     expect(addScaleSpy).toHaveBeenCalledWith(httpRequest.body)
