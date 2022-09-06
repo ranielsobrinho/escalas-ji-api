@@ -1,6 +1,8 @@
-import { RequiredFieldValidation } from '../../../../../presentation/helpers/validators/required-field-validation'
-import { Validation } from '../../../../../presentation/helpers/validators/validation'
-import { ValidationComposite } from '../../../../../presentation/helpers/validators/validation-composite'
+import {
+  ValidationComposite,
+  RequiredFieldValidation
+} from '../../../../../validation/validators'
+import { Validation } from '../../../../../presentation/protocols'
 
 export const makeAddRoleValidation = (): ValidationComposite => {
   const validations: Validation[] = []

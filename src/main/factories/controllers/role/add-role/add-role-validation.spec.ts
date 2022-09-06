@@ -1,9 +1,11 @@
-import { RequiredFieldValidation } from '../../../../../presentation/helpers/validators/required-field-validation'
-import { Validation } from '../../../../../presentation/helpers/validators/validation'
-import { ValidationComposite } from '../../../../../presentation/helpers/validators/validation-composite'
+import {
+  RequiredFieldValidation,
+  ValidationComposite
+} from '../../../../../validation/validators'
+import { Validation } from '../../../../../presentation/protocols'
 import { makeAddRoleValidation } from './add-role-validation'
 
-jest.mock('../../../../../presentation/helpers/validators/validation-composite')
+jest.mock('../../../../../validation/validators/validation-composite')
 
 describe('AddRoleValidation Factory', () => {
   test('Should call ValidatonComposite with all validations', () => {

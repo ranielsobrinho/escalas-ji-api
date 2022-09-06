@@ -1,4 +1,4 @@
-import { MissingParamError, ServerError } from '../../../errors'
+import { MissingParamError } from '../../../errors'
 import { badRequest, ok, serverError } from '../../../helpers/http-helper'
 import { HttpRequest } from '../../../protocols'
 import { Validation, AddRole, RoleModel } from './add-role-controller-protocols'
