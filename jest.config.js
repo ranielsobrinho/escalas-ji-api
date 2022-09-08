@@ -10,7 +10,7 @@ module.exports = {
   testEnvironment: 'node',
   collectCoverage: true,
   coverageDirectory: 'coverage',
-  coverageProvider: 'babel',
+  coverageProvider: 'v8',
   transform: {
     '.+\\.ts$': 'ts-jest'
   }
