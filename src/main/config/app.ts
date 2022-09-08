@@ -5,8 +5,7 @@ import morgan from 'morgan'
 
 morgan.token('body', (req: express.Request) => {
   const isNotGet = req.method !== 'GET'
-  const isNotAudio = !req.url.includes('audios')
-  if (isNotGet && isNotAudio) {
+  if (isNotGet) {
     return JSON.stringify(req.body)
   }
   return 'body-empty'
