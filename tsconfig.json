@@ -1,11 +1,11 @@
 {
-	"compilerOptions": {
-		"outDir": "./dist",
-		"module": "commonjs",
-		"target": "ES2019",
-		"esModuleInterop": true,
-		"allowJs": true,
-		"strictNullChecks": false,
-		"rootDir": "./src"
-	}
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "commonjs",
+    "target": "ES2019",
+    "esModuleInterop": true,
+    "strictNullChecks": false
+  },
+  "include": ["src", "**/schema.prisma"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }
